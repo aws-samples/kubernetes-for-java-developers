@@ -1,0 +1,18 @@
+= A Day in Java Developer's Life, with a taste of Kubernetes
+
+Deploying your Java application in a Kubernetes cluster could feel like Alice in Wonderland. You keep going down the rabbit hole and don't know how to make that ride comfortable. This no-slide and code-only session will explain how a Java application consisting of different microservices can be deployed in a Kubernetes cluster. Specifically, it will explain the following:
+
+- Show a Java application with three microservices
+- How this application is packaged as a Docker image
+- Create Kubernetes manifests
+- How Helm charts are created and hosted in a Helm repository
+- Test in a local environment such as minikube
+- Attach debugger (may need to find out if tooling exists in this area)
+- Install Istio in k8s, show service visibility
+- Install k8s on AWS
+- Migrate application from a local cluster to a cluster on the Cloud
+- Setup deployment pipeline using CodePipeline
+- Use an Alexa skill to scale the application
+- Change application, show A/B using Istio
+
+
