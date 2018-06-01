@@ -1,18 +1,34 @@
 = A Day in Java Developer's Life, with a taste of Kubernetes
+:toc:
 
-Deploying your Java application in a Kubernetes cluster could feel like Alice in Wonderland. You keep going down the rabbit hole and don't know how to make that ride comfortable. This no-slide and code-only session will explain how a Java application consisting of different microservices can be deployed in a Kubernetes cluster. Specifically, it will explain the following:
+Deploying your Java application in a Kubernetes cluster could feel like Alice in Wonderland. You keep going down the rabbit hole and don't know how to make that ride comfortable. This repository explains how a Java application consisting of three  microservices can be deployed in a Kubernetes cluster.
 
-- Show a Java application with three microservices
-- How this application is packaged as a Docker image
-- Create Kubernetes manifests
-- How Helm charts are created and hosted in a Helm repository
-- Test in a local environment such as minikube
-- Attach debugger (may need to find out if tooling exists in this area)
-- Install Istio in k8s, show service visibility
-- Install k8s on AWS
-- Migrate application from a local cluster to a cluster on the Cloud
-- Setup deployment pipeline using CodePipeline
-- Use an Alexa skill to scale the application
-- Change application, show A/B using Istio
+== Microservices
 
+The three microservices are:
+
+. `webapp`: Web application microservice calls `greeting` and `name` microservice to generate a greeting for a person.
+. `greeting`: A microservice that returns a greeting.
+. `name`: A microservice that returns a person’s name based upon `{id}` in the URL.
+
+== Build and Test Services using Maven
+
+. Each microservice is in a different repo:
++
+[cols="1,3"]
+|====
+| `greeting` | https://github.com/arun-gupta/microservices-greeting
+| `name` | https://github.com/arun-gupta/microservices-name
+| `webapp` | https://github.com/arun-gupta/microservices-webapp
+|====
++
+. Clone all the repos. Open each one in a separate terminal.
+. Run `greeting` service: `mvn wildfly-swarm:run`
+.. Optionally test: `curl http://localhost:8081/resources/greeting`
+. Run `name` service: `mvn wildfly-swarm:run`
+.. Optionally test:
+... `curl http://localhost:8082/resources/names`
+... `curl http://localhost:8082/resources/names/1`
+. Run `webapp` service: `mvn wildfly-swarm:run`
+. Run the application: `curl http://localhost:8080/`
 
