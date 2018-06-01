@@ -23,14 +23,30 @@ The three microservices are:
 |====
 +
 . Clone all the repos. Open each one in a separate terminal.
-. Run `greeting` service: `mvn wildfly-swarm:run`
-.. Optionally test: `curl http://localhost:8081/resources/greeting`
-. Run `name` service: `mvn wildfly-swarm:run`
-.. Optionally test:
-... `curl http://localhost:8082/resources/names`
-... `curl http://localhost:8082/resources/names/1`
-. Run `webapp` service: `mvn wildfly-swarm:run`
-. Run the application: `curl http://localhost:8080/`
+. Run `greeting` service:
++
+	mvn wildfly-swarm:run
++
+Test:
++
+	curl http://localhost:8081/resources/greeting
++
+. Run `name` service:
++
+	mvn wildfly-swarm:run
++
+Test:
++
+	curl http://localhost:8082/resources/names
+	curl http://localhost:8082/resources/names/1
++
+. Run `webapp` service:
+
+	mvn wildfly-swarm:run
+
+. Run the application:
+
+	curl http://localhost:8080/
 
 == Package as Docker image
 
