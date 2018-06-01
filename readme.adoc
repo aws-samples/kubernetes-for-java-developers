@@ -52,11 +52,44 @@ Push Docker images to the registry:
 
   mvn install -Pdocker
 
-== Kubernetes Manifests
-
-== Helm Charts
-
 == Test in Local Environment
+
+Kubernetes can be easily enabled on a development machine using Docker for Mac as explained at https://docs.docker.com/docker-for-mac/#kubernetes.
+
+. Configure kubectl CLI for Kubernetes cluster
+
+	kubectl config use-context docker-for-desktop
+
+. Install the Helm CLI:
++
+	brew install kubernetes-helm
++
+If Helm CLI is already installed then use `brew upgrade kubernetes-helm`.
++
+. Install Helm in Kubernetes cluster:
++
+	helm init
++
+If Helm has already been initialized on the cluster then you may have to upgrade Tiller:
++
+	helm init --upgrade
++
+. Install the Helm chart:
++
+	helm install --name myapp manifests/myapp
++
+By default, the `latest` tag for an image is used. Alternatively, a different tag for the image can be used:
++
+  helm install --name myapp apps/k8s/helm/myapp --set "docker.tag=<tag>"
++
+. Access the application:
++
+  curl http://$(kubectl get svc/myapp-webapp -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
++
+. Delete the Helm chart:
+
+	helm delete --purge myapp
+
 
 == Attach Debugger
 
