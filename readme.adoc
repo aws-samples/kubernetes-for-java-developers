@@ -32,3 +32,43 @@ The three microservices are:
 . Run `webapp` service: `mvn wildfly-swarm:run`
 . Run the application: `curl http://localhost:8080/`
 
+== Package as Docker image
+
+=== Create Docker Images
+
+`mvn package -Pdocker` for each repo will create the Docker image.
+
+By default, the Docker image name is `arungupta/<service>` where `<service>` is `greeting`, `name` or `webapp`. The image can be created in your repo:
+
+  mvn package -Pdocker -Ddocker.repo=<repo>
+
+By default, the `latest` tag is used for the image. A different tag may be specified as:
+
+  mvn package -Pdocker -Ddocker.tag=<tag>
+
+=== Push Docker Images to Registry
+
+Push Docker images to the registry:
+
+  mvn install -Pdocker
+
+== Kubernetes Manifests
+
+== Helm Charts
+
+== Test in Local Environment
+
+== Attach Debugger
+
+== Service Visibility using Istio
+
+== Kubernetes Cluster on AWS
+
+== Migrate from Dev to Prod
+
+== Deployment Pipeline
+
+== Alexa Skill to Scale the Application
+
+== A/B Deployment
+
