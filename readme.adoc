@@ -109,11 +109,11 @@ By default, the `latest` tag for an image is used. Alternatively, a different ta
 
 == Attach Debugger
 
-== Service Visibility using Istio
-
 == Kubernetes Cluster on AWS
 
 == Migrate from Dev to Prod
+
+== Service Visibility using Istio
 
 == Deployment Pipeline
 
