@@ -192,12 +192,12 @@ servicegraph-6d86dfc6cb-6pggg               1/1       Running     0          15m
 
 === Traffic Shifting and A/B Deployment
 
-. Deploy application with two versions of `greeting`:
+. Deploy application with two versions of `greeting`, one that returns `Hello` greeting and another that returns `Howdy`:
 
   kubectl apply -f manifests/app.yaml
   kubectl apply -f manifests/app-greeting-hello-howdy.yaml
 
-. Access application multipe times to see different greeting message between `Hello` and `Howdy`:
+. Access application multipe times to see different greeting messages:
 
   for i in {1..10}
   do
@@ -208,6 +208,8 @@ servicegraph-6d86dfc6cb-6pggg               1/1       Running     0          15m
 . Setup an Istio rule to split traffic between 75% to `Hello` and 25% to `Howdy` version of the `greeting` service:
 
   kubectl apply -f manifests/greeting-rule-75-25.yaml
+
+. Invoke the service again to see the traffic split between two greeting services.
 
 === Distributed Tracing
 

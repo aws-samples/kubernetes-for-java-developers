@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: greeting-hello-howdy
+  name: greeting-virtual-service
 spec:
   hosts:
     - greeting
@@ -19,9 +19,9 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: reviews
+  name: greeting-destination-rule
 spec:
-  host: reviews
+  host: greeting
   subsets:
   - name: greeting-hello
     labels:
