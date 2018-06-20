@@ -1,0 +1,31 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: greeting-virtual-service
+spec:
+  hosts:
+    - greeting
+  http:
+  - route:
+    - destination:
+        host: greeting
+        subset: greeting-hello
+      weight: 90
+    - destination:
+        host: greeting
+        subset: greeting-howdy
+      weight: 10
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: greeting-destination-rule
+spec:
+  host: greeting
+  subsets:
+  - name: greeting-hello
+    labels:
+      greeting: hello
+  - name: greeting-howdy
+    labels:
+      greeting: howdy

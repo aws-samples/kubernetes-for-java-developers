@@ -190,7 +190,7 @@ servicegraph-6d86dfc6cb-6pggg               1/1       Running     0          15m
 
   curl http://$(kubectl get svc/webapp -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 
-=== Traffic Shifting and A/B Deployment
+=== Traffic Shifting
 
 . Deploy application with two versions of `greeting`, one that returns `Hello` greeting and another that returns `Howdy`:
 
@@ -210,6 +210,21 @@ servicegraph-6d86dfc6cb-6pggg               1/1       Running     0          15m
   kubectl apply -f manifests/greeting-rule-75-25.yaml
 
 . Invoke the service again to see the traffic split between two greeting services.
+
+=== Canary Deployment
+
+. Setup an Istio rule to divert 10% traffic to canary:
+
+  kubectl delete -f manifests/greeting-rule-75-25.yaml
+  kubectl apply -f manifests/greeting-canary.yaml
+
+. Access application multipe times to see ~10% greeting messages with `Howdy`:
+
+  for i in {1..50}
+  do
+  	curl -q http://$(kubectl get svc/webapp -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+  	echo
+  done
 
 === Distributed Tracing
 
