@@ -108,84 +108,86 @@ By default, the `latest` tag for an image is used. Alternatively, a different ta
 
 == Attach Debugger
 
-== Istio
-
-. Install and configure:
-+
-```
-curl -L https://github.com/istio/istio/releases/download/0.8.0/istio-0.8.0-osx.tar.gz | tar xzvf -
-cd istio-0.8.0
-export PATH=$PWD/bin:$PATH
-kubectl apply -f install/kubernetes/istio-demo.yaml
-```
-+
-. Verify:
-+
-```
-kubectl get svc -n istio-system
-NAME                       TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                                                               AGE
-grafana                    ClusterIP      10.109.62.166    <none>        3000/TCP                                                              43s
-istio-citadel              ClusterIP      10.110.20.48     <none>        8060/TCP,9093/TCP                                                     43s
-istio-egressgateway        ClusterIP      10.96.67.231     <none>        80/TCP,443/TCP                                                        43s
-istio-ingressgateway       LoadBalancer   10.111.113.246   localhost     80:31380/TCP,443:31390/TCP,31400:31400/TCP                            43s
-istio-pilot                ClusterIP      10.108.5.61      <none>        15003/TCP,15005/TCP,15007/TCP,15010/TCP,15011/TCP,8080/TCP,9093/TCP   43s
-istio-policy               ClusterIP      10.106.61.144    <none>        9091/TCP,15004/TCP,9093/TCP                                           43s
-istio-sidecar-injector     ClusterIP      10.100.87.140    <none>        443/TCP                                                               43s
-istio-statsd-prom-bridge   ClusterIP      10.101.163.79    <none>        9102/TCP,9125/UDP                                                     43s
-istio-telemetry            ClusterIP      10.97.85.21      <none>        9091/TCP,15004/TCP,9093/TCP,42422/TCP                                 43s
-prometheus                 ClusterIP      10.111.107.203   <none>        9090/TCP                                                              43s
-servicegraph               ClusterIP      10.103.81.16     <none>        8088/TCP                                                              43s
-tracing                    LoadBalancer   10.98.140.25     <pending>     80:30349/TCP                                                          36s
-zipkin                     ClusterIP      10.106.229.33    <none>        9411/TCP                                                              36s
-```
-+
-. 
-
 == Kubernetes Cluster on AWS
 
 === Kops Cluster
-
-==== Outside China
 
 . Set AZs: `export AWS_AVAILABILITY_ZONES="$(aws ec2 describe-availability-zones --query 'AvailabilityZones[].ZoneName' --output text | awk -v OFS="," '$1=$1')"`
 . Set state store: `export KOPS_STATE_STORE=s3://kubernetes-aws-io`
 . Create cluster:
 
-  kops create cluster \
-  	--zones ${AWS_AVAILABILITY_ZONES} \
-  	--master-count 1 \
-  	--node-count 5 \
-  	--name cluster.k8s.local \
-  	--yes
-
-. Enable admission controllers as explained at https://istio.io/docs/setup/kubernetes/quick-start/#aws-w-kops
-
-==== In China
-
-https://github.com/kubernetes/kops/blob/master/docs/aws-china.md
-
-. Configure China region for `aws` CLI:
-
-	$ aws configure
-	AWS Access Key ID [********************]: **********
-	AWS Secret Access Key [********************]: **********
-	Default region name [us-west-2]: cn-north-1
-	Default output format [None]: 
-
-. Set region: `export AWS_REGION=cn-north-1`
-. Create bucket: `aws s3api create-bucket --bucket kubernetes-aws-china --create-bucket-configuration LocationConstraint=$AWS_REGION`
-. Set state store: `export KOPS_STATE_STORE=s3://kubernetes-aws-china`
-. Set AZs: `export AWS_AVAILABILITY_ZONES="$(aws ec2 describe-availability-zones --query 'AvailabilityZones[].ZoneName' --output text | awk -v OFS="," '$1=$1')"`
+kops create cluster \
+	--zones ${AWS_AVAILABILITY_ZONES} \
+	--master-size m4.xlarge \
+	--master-zones ${AWS_AVAILABILITY_ZONES} \
+	--node-count 5 \
+	--node-size m4.2xlarge \
+	--name cluster.k8s.local \
+	--yes
 
 === EKS Cluster
 
 == Migrate from Dev to Prod
 
-== Service Visibility using Istio
+== Istio
+
+=== Install and Configure
+
+. Enable admission controllers as explained at https://istio.io/docs/setup/kubernetes/quick-start/#aws-w-kops. Rolling update the cluster to enable admission controllers.
+. Install and configure:
+
+	curl -L https://github.com/istio/istio/releases/download/0.8.0/istio-0.8.0-osx.tar.gz | tar xzvf -
+	cd istio-0.8.0
+	export PATH=$PWD/bin:$PATH
+	kubectl apply -f install/kubernetes/istio-demo.yaml
+
+. Verify:
++
+```
+$ kubectl get pods -n istio-system
+NAME                                        READY     STATUS              RESTARTS   AGE
+grafana-cd99bf478-mcbpw                     1/1       Running             0          43s
+istio-citadel-ff5696f6f-fqfcg               1/1       Running             0          39s
+istio-cleanup-old-ca-wszns                  0/1       ContainerCreating   0          37s
+istio-egressgateway-58d98d898c-27mbj        1/1       Running             0          44s
+istio-ingressgateway-6bc7c7c4bc-rqjfn       1/1       Running             0          43s
+istio-mixer-post-install-dzn6w              0/1       Completed           0          1m
+istio-pilot-6c5c6b586c-lrtxf                1/2       Running             0          41s
+istio-policy-5c7fbb4b9f-rwzv7               0/2       ContainerCreating   0          42s
+istio-sidecar-injector-dbd67c88d-mgtvn      0/1       ContainerCreating   0          38s
+istio-statsd-prom-bridge-6dbb7dcc7f-gtfz2   1/1       Running             0          48s
+istio-telemetry-54b5bf4847-zmlsb            2/2       Running             0          41s
+istio-tracing-67dbb5b89f-lg7tp              1/1       Running             0          38s
+prometheus-586d95b8d9-zc7bp                 1/1       Running             0          40s
+servicegraph-6d86dfc6cb-6pggg               1/1       Running             0          39s
+```
++
+. Enable sidecar injection for the `default` namespace:
+
+  kubectl label namespace default istio-injection=enabled
+
+. Deploy the application:
+
+  kubectl apply -f manifests/app.yaml
+
+. Check the pods and note that each pod has 2 containers running:
+
+  $ kubectl get pods
+  NAME                       READY     STATUS    RESTARTS   AGE
+  greeting-fdb644b54-q6z6f   2/2       Running   0          5m
+  name-6b98d566bf-khmp6      2/2       Running   0          5m
+  webapp-6f4546695d-tnsf8    2/2       Running   0          5m
+
+. Get response:
+
+  curl http://$(kubectl get svc/webapp -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+  
+=== Traffic Shifting and A/B Deployment using Istio
+
+=== Monitoring using Istio
 
 == Deployment Pipeline
 
 == Alexa Skill to Scale the Application
 
-== A/B Deployment
 
