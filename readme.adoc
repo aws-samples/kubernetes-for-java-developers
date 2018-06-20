@@ -190,9 +190,26 @@ servicegraph-6d86dfc6cb-6pggg               1/1       Running     0          15m
 
   curl http://$(kubectl get svc/webapp -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 
-=== Traffic Shifting and A/B Deployment using Istio
+=== Traffic Shifting and A/B Deployment
 
-=== Distributed Tracing using Istio
+. Deploy application with two versions of `greeting`:
+
+  kubectl apply -f manifests/app.yaml
+  kubectl apply -f manifests/app-greeting-hello-howdy.yaml
+
+. Access application multipe times to see different greeting message between `Hello` and `Howdy`:
+
+  for i in {1..10}
+  do
+  	curl -q http://$(kubectl get svc/webapp -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+  	echo
+  done
+  
+. Setup an Istio rule to split traffic between 75% to `Hello` and 25% to `Howdy` version of the `greeting` service:
+
+  kubectl apply -f manifests/greeting-rule-70-25.yaml
+
+=== Distributed Tracing
 
 Istio is deployed as a sidecar proxy into each of your pods; this means it can see and monitor all the traffic flows between your microservices and generate a graphical representation of your mesh traffic. We’ll use the application you deployed in the previous step to demonstrate this.
 
