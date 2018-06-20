@@ -112,11 +112,19 @@ By default, the `latest` tag for an image is used. Alternatively, a different ta
 
 === Kops Cluster
 
-. Set AZs: `export AWS_AVAILABILITY_ZONES="$(aws ec2 describe-availability-zones --query 'AvailabilityZones[].ZoneName' --output text | awk -v OFS="," '$1=$1')"`
+. Set AZs:
++
+```
+export AWS_AVAILABILITY_ZONES="$(aws ec2 describe-availability-zones \
+	--query 'AvailabilityZones[].ZoneName' \
+	--output text | \
+	awk -v OFS="," '$1=$1')"
+```
++
 . Set state store: `export KOPS_STATE_STORE=s3://kubernetes-aws-io`
 . Create cluster:
 
-kops create cluster \
+  kops create cluster \
 	--zones ${AWS_AVAILABILITY_ZONES} \
 	--master-size m4.xlarge \
 	--master-zones ${AWS_AVAILABILITY_ZONES} \
@@ -145,21 +153,21 @@ kops create cluster \
 +
 ```
 $ kubectl get pods -n istio-system
-NAME                                        READY     STATUS              RESTARTS   AGE
-grafana-cd99bf478-mcbpw                     1/1       Running             0          43s
-istio-citadel-ff5696f6f-fqfcg               1/1       Running             0          39s
-istio-cleanup-old-ca-wszns                  0/1       ContainerCreating   0          37s
-istio-egressgateway-58d98d898c-27mbj        1/1       Running             0          44s
-istio-ingressgateway-6bc7c7c4bc-rqjfn       1/1       Running             0          43s
-istio-mixer-post-install-dzn6w              0/1       Completed           0          1m
-istio-pilot-6c5c6b586c-lrtxf                1/2       Running             0          41s
-istio-policy-5c7fbb4b9f-rwzv7               0/2       ContainerCreating   0          42s
-istio-sidecar-injector-dbd67c88d-mgtvn      0/1       ContainerCreating   0          38s
-istio-statsd-prom-bridge-6dbb7dcc7f-gtfz2   1/1       Running             0          48s
-istio-telemetry-54b5bf4847-zmlsb            2/2       Running             0          41s
-istio-tracing-67dbb5b89f-lg7tp              1/1       Running             0          38s
-prometheus-586d95b8d9-zc7bp                 1/1       Running             0          40s
-servicegraph-6d86dfc6cb-6pggg               1/1       Running             0          39s
+NAME                                        READY     STATUS      RESTARTS   AGE
+grafana-cd99bf478-mcbpw                     1/1       Running     0          15m
+istio-citadel-ff5696f6f-fqfcg               1/1       Running     0          15m
+istio-cleanup-old-ca-wszns                  0/1       Completed   0          15m
+istio-egressgateway-58d98d898c-27mbj        1/1       Running     0          15m
+istio-ingressgateway-6bc7c7c4bc-rqjfn       1/1       Running     0          15m
+istio-mixer-post-install-dzn6w              0/1       Completed   0          15m
+istio-pilot-6c5c6b586c-lrtxf                2/2       Running     0          15m
+istio-policy-5c7fbb4b9f-rwzv7               2/2       Running     0          15m
+istio-sidecar-injector-dbd67c88d-mgtvn      1/1       Running     0          15m
+istio-statsd-prom-bridge-6dbb7dcc7f-gtfz2   1/1       Running     0          15m
+istio-telemetry-54b5bf4847-zmlsb            2/2       Running     0          15m
+istio-tracing-67dbb5b89f-lg7tp              1/1       Running     0          15m
+prometheus-586d95b8d9-zc7bp                 1/1       Running     0          15m
+servicegraph-6d86dfc6cb-6pggg               1/1       Running     0          15m
 ```
 +
 . Enable sidecar injection for the `default` namespace:
@@ -170,7 +178,7 @@ servicegraph-6d86dfc6cb-6pggg               1/1       Running             0     
 
   kubectl apply -f manifests/app.yaml
 
-. Check the pods and note that each pod has 2 containers running:
+. Check the pods and note that each pod has two containers (one for application and one sidecar) running:
 
   $ kubectl get pods
   NAME                       READY     STATUS    RESTARTS   AGE
@@ -181,10 +189,25 @@ servicegraph-6d86dfc6cb-6pggg               1/1       Running             0     
 . Get response:
 
   curl http://$(kubectl get svc/webapp -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-  
+
 === Traffic Shifting and A/B Deployment using Istio
 
-=== Monitoring using Istio
+=== Distributed Tracing using Istio
+
+Istio is deployed as a sidecar proxy into each of your pods; this means it can see and monitor all the traffic flows between your microservices and generate a graphical representation of your mesh traffic. We’ll use the application you deployed in the previous step to demonstrate this.
+
+Setup access to the tracing dashboard URL using port-forwarding:
+
+	kubectl port-forward \
+		-n istio-system \
+		$(kubectl get pod \
+			-n istio-system \
+			-l app=jaeger \
+			-o jsonpath='{.items[0].metadata.name}') 16686:16686 &
+
+Access the dashboard at http://localhost:16686.
+
+image::images/istio-dag.png[]
 
 == Deployment Pipeline
 
