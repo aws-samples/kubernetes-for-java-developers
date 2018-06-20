@@ -209,8 +209,28 @@ Access the dashboard at http://localhost:16686.
 
 image::images/istio-dag.png[]
 
+=== Metrics using Grafana
+
+. Install the Grafana add-on:
+
+	kubectl apply -f install/kubernetes/addons/grafana.yaml
+
+. Forward Istio dashboard using Grafana UI:
+
+	kubectl -n istio-system \
+		port-forward $(kubectl -n istio-system \
+			get pod -l app=grafana \
+			-o jsonpath='{.items[0].metadata.name}') 3000:3000 &
+
+. View Istio dashboard http://localhost:3000/d/1/istio-dashboard?
+
+. Invoke the endpoint:
+
+	curl http://$(kubectl get svc/webapp -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+
+image::images/istio-dashboard.png[]
+
 == Deployment Pipeline
 
-== Alexa Skill to Scale the Application
 
 
