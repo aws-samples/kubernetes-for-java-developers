@@ -207,7 +207,7 @@ servicegraph-6d86dfc6cb-6pggg               1/1       Running     0          15m
   
 . Setup an Istio rule to split traffic between 75% to `Hello` and 25% to `Howdy` version of the `greeting` service:
 
-  kubectl apply -f manifests/greeting-rule-70-25.yaml
+  kubectl apply -f manifests/greeting-rule-75-25.yaml
 
 === Distributed Tracing
 
