@@ -31,8 +31,6 @@ spec:
           value: "8081"
         - name: GREETING_SERVICE_PATH
           value: /resources/greeting
-        - name: AWS_XRAY_DAEMON_ADDRESS
-          value: xray-service.default:2000
         readinessProbe:
           httpGet:
             path: /

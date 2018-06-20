@@ -24,6 +24,3 @@ spec:
             port: 8081
           initialDelaySeconds: 50
           periodSeconds: 5
-        env:
-        - name: AWS_XRAY_DAEMON_ADDRESS
-          value: xray-service.default:2000
