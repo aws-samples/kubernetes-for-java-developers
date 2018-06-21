@@ -135,6 +135,8 @@ export AWS_AVAILABILITY_ZONES="$(aws ec2 describe-availability-zones \
 
 === EKS Cluster
 
+https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html
+
 == Migrate from Dev to Prod
 
 == Istio
