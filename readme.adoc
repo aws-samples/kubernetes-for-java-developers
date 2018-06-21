@@ -139,6 +139,20 @@ https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html
 
 == Migrate from Dev to Prod
 
+. Get the list of configs:
+
+	$ kubectl config get-contexts
+	CURRENT   NAME                 CLUSTER                      AUTHINFO             NAMESPACE
+	          aws                  kubernetes                   aws                  
+	          cluster.k8s.local    cluster.k8s.local            cluster.k8s.local    
+	*         docker-for-desktop   docker-for-desktop-cluster   docker-for-desktop   
+
+. Change the context:
+
+    kubectl config use-context cluster.k8s.local
+
+. Redeploy the application
+
 == Istio
 
 === Install and Configure
