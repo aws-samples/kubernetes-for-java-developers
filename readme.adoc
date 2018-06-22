@@ -38,7 +38,7 @@ The source code is in the `app` directory.
 
 	docker container rm -f skaffold-greeting
 
-== Debug using IntelliJ
+== Debug Docker and Kubernetes using IntelliJ
 
 You can debug a Docker container and a Kubernetes Pod if they're running locally on your machine. This was tested using Docker for Mac.
 
