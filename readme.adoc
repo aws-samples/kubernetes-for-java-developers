@@ -1,58 +1,29 @@
 = A Day in Java Developer's Life, with a taste of Kubernetes
 :toc:
 
-Deploying your Java application in a Kubernetes cluster could feel like Alice in Wonderland. You keep going down the rabbit hole and don't know how to make that ride comfortable. This repository explains how a Java application consisting of three  microservices can be deployed in a Kubernetes cluster.
+Deploying your Java application in a Kubernetes cluster could feel like Alice in Wonderland. You keep going down the rabbit hole and don't know how to make that ride comfortable. This repository explains how a Java application can be deployed, tested, debugged in Kubernetes.
 
-== Microservices
+== Application
 
-The three microservices are:
+We will use a simple Java application built using https://thorntail.io/[Thorntail] (nee WildFly Swarm). The application publishes a REST endpoint that can be invoked at `http://{host}:{port}/resources/greeting`.
 
-. `webapp`: Web application microservice calls `greeting` and `name` microservice to generate a greeting for a person.
-. `greeting`: A microservice that returns a greeting.
-. `name`: A microservice that returns a person’s name based upon `{id}` in the URL.
+The source code is in the `app` directory.
 
 == Build and Test using Maven
 
-. Each microservice is in a different repo:
-+
-[cols="1,3"]
-|====
-| `greeting` | https://github.com/arun-gupta/microservices-greeting
-| `name` | https://github.com/arun-gupta/microservices-name
-| `webapp` | https://github.com/arun-gupta/microservices-webapp
-|====
-+
-. Clone all the repos. Open each one in a separate terminal.
-. Run `greeting` service:
+. Run application:
 
+	cd app
 	mvn wildfly-swarm:run
 
-. Test `greeting` service:
+. Test application
 
-	curl http://localhost:8081/resources/greeting
-
-. Run `name` service:
-
-	mvn wildfly-swarm:run
-
-. Test `name` service:
-
-	curl http://localhost:8082/resources/names
-	curl http://localhost:8082/resources/names/1
-
-. Run `webapp` service:
-
-	mvn wildfly-swarm:run
-
-. Test application:
-
-	curl http://localhost:8080/
+	curl http://localhost:8080/resources/greeting
 
 == Build and Test using Docker
 
-. Create Docker image
+. Create Docker image:
 
-	cd app
 	docker image build -t arungupta/skaffold-greeting .
 
 . Run container:
