@@ -11,7 +11,7 @@ The three microservices are:
 . `greeting`: A microservice that returns a greeting.
 . `name`: A microservice that returns a person’s name based upon `{id}` in the URL.
 
-== Build and Test Services using Maven
+== Build and Test using Maven
 
 . Each microservice is in a different repo:
 +
@@ -48,7 +48,7 @@ The three microservices are:
 
 	curl http://localhost:8080/
 
-== Package as Docker image
+== Build and Test using Docker
 
 . Create Docker image
 
@@ -67,7 +67,31 @@ The three microservices are:
 
 	docker container rm -f skaffold-greeting
 
-== Test in Local Environment
+== Debug Docker Container using IntelliJ
+
+. Run container:
+
+	docker container run --name skaffold-greeting -p 8080:8080 -p 5005:5005 -d arungupta/skaffold-greeting
+
+. Check container:
+
+	$ docker container ls -a
+	CONTAINER ID        IMAGE                         COMMAND                  CREATED             STATUS              PORTS                                            NAMES
+	724313157e3c        arungupta/skaffold-greeting   "java -jar app-swarm…"   3 seconds ago       Up 2 seconds        0.0.0.0:5005->5005/tcp, 0.0.0.0:8080->8080/tcp   skaffold-greeting
+
+. `Run`, `Debug`, `Remote`:
++
+image::images/docker-debug1.png[]
++
+. Click on `Debug`, setup a breakpoint in the class:
++
+image::images/docker-debug2.png[]
++
+. Access the application using `curl http://localhost:8080/resources/greeting` to hit the breakpoint:
++
+image::images/docker-debug3.png[]
+
+== Build and Test using Kubernetes
 
 Kubernetes can be easily enabled on a development machine using Docker for Mac as explained at https://docs.docker.com/docker-for-mac/#kubernetes.
 
@@ -105,37 +129,15 @@ By default, the `latest` tag for an image is used. Alternatively, a different ta
 
 	helm delete --purge myapp
 
-== Debug using IntelliJ
-
-. Run container:
-
-	docker container run --name skaffold-greeting -p 8080:8080 -p 5005:5005 -d arungupta/skaffold-greeting
-
-. Check container:
-
-	$ docker container ls -a
-	CONTAINER ID        IMAGE                         COMMAND                  CREATED             STATUS              PORTS                                            NAMES
-	724313157e3c        arungupta/skaffold-greeting   "java -jar app-swarm…"   3 seconds ago       Up 2 seconds        0.0.0.0:5005->5005/tcp, 0.0.0.0:8080->8080/tcp   skaffold-greeting
-
-. `Run`, `Debug`, `Remote`:
-+
-image::images/docker-debug1.png[]
-+
-. Click on `Debug`, setup a breakpoint in the class:
-+
-image::images/docker-debug2.png[]
-+
-. Access the application using `curl http://localhost:8080/resources/greeting` to hit the breakpoint:
-+
-image::images/docker-debug3.png[]
-
 == Kubernetes Cluster on AWS
 
 === EKS
 
 https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html
 
-=== Kops
+=== kops
+
+https://github.com/kubernetes/kops[kops] is a commmunity-supported way to get a Kubernetes cluster up and running on AWS.
 
 . Set AZs:
 +
@@ -183,6 +185,10 @@ export AWS_AVAILABILITY_ZONES="$(aws ec2 describe-availability-zones \
 . Redeploy the application
 
 == Istio
+
+https://istio.io/[Istio] is is a layer 4/7 proxy that routes and load balances traffic over HTTP, WebSocket, HTTP/2, gRPC and supports application protocols such as MongoDB and Redis. Istio uses the Envoy proxy to manage all inbound/outbound traffic in the service mesh.
+
+Istio has a wide variety of traffic management features that live outside the application code, such as A/B testing, phased/canary rollouts, failure recovery, circuit breaker, layer 7 routing and policy enforcement (all provided by the Envoy proxy). Istio also supports ACLs, rate limits, quotas, authentication, request tracing and telemetry collection using its Mixer component. The goal of the Istio project is to support traffic management and security of microservices without requiring any changes to the application; it does this by injecting a sidecar into your pod that handles all network communications.
 
 === Install and Configure
 
