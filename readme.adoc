@@ -124,14 +124,14 @@ export AWS_AVAILABILITY_ZONES="$(aws ec2 describe-availability-zones \
 . Set state store: `export KOPS_STATE_STORE=s3://kubernetes-aws-io`
 . Create cluster:
 
-  kops create cluster \
-	--zones ${AWS_AVAILABILITY_ZONES} \
-	--master-size m4.xlarge \
-	--master-zones ${AWS_AVAILABILITY_ZONES} \
-	--node-count 5 \
-	--node-size m4.2xlarge \
-	--name cluster.k8s.local \
-	--yes
+	kops create cluster \
+		--zones ${AWS_AVAILABILITY_ZONES} \
+		--master-size m4.xlarge \
+		--master-zones ${AWS_AVAILABILITY_ZONES} \
+		--node-count 5 \
+		--node-size m4.2xlarge \
+		--name cluster.k8s.local \
+		--yes
 
 === EKS Cluster
 
@@ -150,6 +150,14 @@ https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html
 . Change the context:
 
     kubectl config use-context cluster.k8s.local
+
+. Get updated list of configs:
+
+	$ kubectl config get-contexts
+	CURRENT   NAME                 CLUSTER                      AUTHINFO             NAMESPACE
+	          aws                  kubernetes                   aws                  
+	*         cluster.k8s.local    cluster.k8s.local            cluster.k8s.local    
+	          docker-for-desktop   docker-for-desktop-cluster   docker-for-desktop
 
 . Redeploy the application
 
