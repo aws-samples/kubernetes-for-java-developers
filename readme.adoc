@@ -82,7 +82,7 @@ If Helm CLI is already installed then use `brew upgrade kubernetes-helm`.
 +
 	helm init
 +
-If Helm has already been initialized on the cluster then you may have to upgrade Tiller:
+If Helm has already been initialized on the cluster, then you may have to upgrade Tiller:
 +
 	helm init --upgrade
 +
@@ -96,7 +96,8 @@ By default, the `latest` tag for an image is used. Alternatively, a different ta
 +
 . Access the application:
 
-  curl http://$(kubectl get svc/myapp-webapp -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+  curl http://$(kubectl get svc/skaffold-greeting-service \
+  	-o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
 
 . Delete the Helm chart:
 
