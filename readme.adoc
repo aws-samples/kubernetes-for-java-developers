@@ -67,7 +67,9 @@ The three microservices are:
 
 	docker container rm -f skaffold-greeting
 
-== Debug Docker Container using IntelliJ
+== Debug using IntelliJ
+
+You can debug a Docker container and a Kubernetes Pod if they're running locally on your machine. This was tested using Docker for Mac.
 
 . Run container:
 
