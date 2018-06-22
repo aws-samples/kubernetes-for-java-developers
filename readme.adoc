@@ -282,5 +282,19 @@ image::images/istio-dashboard.png[]
 
 == Deployment Pipeline
 
+https://github.com/GoogleContainerTools/skaffold[Skaffold] is a command line utility that facilitates continuous development for Kubernetes applications. With Skaffold, you can iterate on your application source code locally then deploy it to a remote Kubernetes cluster.
 
+. Download Skaffold:
+
+	curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-darwin-amd64 \
+		&& chmod +x skaffold
+
+. Run Skaffold in the application directory:
+
+	cd app
+    skaffold dev
+
+. Access the service:
+
+    curl http://$(kubectl get svc/skaffold-greeting-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 
