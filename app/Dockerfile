@@ -11,5 +11,5 @@ EXPOSE 8080
 COPY --from=BUILD /usr/src/app/target /opt/target
 WORKDIR /opt/target
 
-CMD ["java", -jar", "app-swarm.jar"]
+CMD ["java", "-jar", "app-swarm.jar"]
 
