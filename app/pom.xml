@@ -17,13 +17,6 @@
         <greeting.host>localhost</greeting.host>
         <greeting.port>8080</greeting.port>
         <greeting.path>/resources/greeting</greeting.path>
-        <version.jersey>2.26</version.jersey>
-        <version.org.slf4j>1.7.5</version.org.slf4j>
-        <version.org.json>20180130</version.org.json>
-        <version.jackson.core>2.9.4</version.jackson.core>
-        <version.javax.inject>1</version.javax.inject>
-        <version.jackson.databind>2.8.4</version.jackson.databind>
-        <version.jackson.annotations>2.8.4</version.jackson.annotations>
     </properties>
 
     <dependencyManagement>
@@ -35,26 +28,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${version.org.slf4j}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-jdk14</artifactId>
-                <version>${version.org.slf4j}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.inject</groupId>
-                <artifactId>javax.inject</artifactId>
-                <version>${version.javax.inject}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.glassfish.jersey.inject</groupId>
-                <artifactId>jersey-hk2</artifactId>
-                <version>${version.jersey}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -62,18 +35,6 @@
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>jaxrs</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jdk14</artifactId>
         </dependency>
     </dependencies>
 
