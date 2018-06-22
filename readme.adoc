@@ -167,6 +167,9 @@ Istio has a wide variety of traffic management features that live outside the ap
 === Install and Configure
 
 . Enable admission controllers as explained at https://istio.io/docs/setup/kubernetes/quick-start/#aws-w-kops. Rolling update the cluster to enable admission controllers.
++
+Alternatively, create the cluster without `--yes`, edit the cluster to enable admission controllers, and then update the cluster using `kops update cluster --name cluster.k8s.local --yes`.
++
 . Install and configure:
 
 	curl -L https://github.com/istio/istio/releases/download/0.8.0/istio-0.8.0-osx.tar.gz | tar xzvf -
@@ -177,56 +180,60 @@ Istio has a wide variety of traffic management features that live outside the ap
 . Verify:
 +
 ```
-$ kubectl get pods -n istio-system
+kubectl get pods -n istio-system
 NAME                                        READY     STATUS      RESTARTS   AGE
-grafana-cd99bf478-mcbpw                     1/1       Running     0          15m
-istio-citadel-ff5696f6f-fqfcg               1/1       Running     0          15m
-istio-cleanup-old-ca-wszns                  0/1       Completed   0          15m
-istio-egressgateway-58d98d898c-27mbj        1/1       Running     0          15m
-istio-ingressgateway-6bc7c7c4bc-rqjfn       1/1       Running     0          15m
-istio-mixer-post-install-dzn6w              0/1       Completed   0          15m
-istio-pilot-6c5c6b586c-lrtxf                2/2       Running     0          15m
-istio-policy-5c7fbb4b9f-rwzv7               2/2       Running     0          15m
-istio-sidecar-injector-dbd67c88d-mgtvn      1/1       Running     0          15m
-istio-statsd-prom-bridge-6dbb7dcc7f-gtfz2   1/1       Running     0          15m
-istio-telemetry-54b5bf4847-zmlsb            2/2       Running     0          15m
-istio-tracing-67dbb5b89f-lg7tp              1/1       Running     0          15m
-prometheus-586d95b8d9-zc7bp                 1/1       Running     0          15m
-servicegraph-6d86dfc6cb-6pggg               1/1       Running     0          15m
+grafana-cd99bf478-59qmx                     1/1       Running     0          4m
+istio-citadel-ff5696f6f-zkpzt               1/1       Running     0          4m
+istio-cleanup-old-ca-6nmrg                  0/1       Completed   0          4m
+istio-egressgateway-58d98d898c-bjd4f        1/1       Running     0          4m
+istio-ingressgateway-6bc7c7c4bc-sc7s6       1/1       Running     0          4m
+istio-mixer-post-install-g67rd              0/1       Completed   0          4m
+istio-pilot-6c5c6b586c-nfwt9                2/2       Running     0          4m
+istio-policy-5c7fbb4b9f-f2xtn               2/2       Running     0          4m
+istio-sidecar-injector-dbd67c88d-j8882      1/1       Running     0          4m
+istio-statsd-prom-bridge-6dbb7dcc7f-ms846   1/1       Running     0          4m
+istio-telemetry-54b5bf4847-nlqjx            2/2       Running     0          4m
+istio-tracing-67dbb5b89f-9zd5j              1/1       Running     0          4m
+prometheus-586d95b8d9-mz9bm                 1/1       Running     0          4m
+servicegraph-6d86dfc6cb-tbwwt               1/1       Running     0          4m
 ```
 +
-. Enable sidecar injection for the `default` namespace:
-
+. Deploy pod with sidecar:
++
+	kubectl apply -f <(istioctl kube-inject -f manifests/app.yaml)
++
+Alternatively, enable sidecar injection for the `default` namespace:
++
   kubectl label namespace default istio-injection=enabled
++
+. Check the pods and note that it has two containers (one for application and one for sidecar):
 
-. Deploy the application:
+	kubectl get pods
+	NAME                        READY     STATUS    RESTARTS   AGE
+	greeting-5ff78ddc8b-pbb4z   2/2       Running   0          1m
 
-  kubectl apply -f manifests/app.yaml
+. Get the list of containers in the pod:
 
-. Check the pods and note that each pod has two containers (one for application and one sidecar) running:
-
-  $ kubectl get pods
-  NAME                       READY     STATUS    RESTARTS   AGE
-  greeting-fdb644b54-q6z6f   2/2       Running   0          5m
-  name-6b98d566bf-khmp6      2/2       Running   0          5m
-  webapp-6f4546695d-tnsf8    2/2       Running   0          5m
+	kubectl get pods -l app=greeting -o jsonpath={.items[*].spec.containers[*].name}
+	greeting istio-proxy
 
 . Get response:
 
-  curl http://$(kubectl get svc/webapp -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+  curl http://$(kubectl get svc/greeting-service \
+  	-o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
 
 === Traffic Shifting
 
-. Deploy application with two versions of `greeting`, one that returns `Hello` greeting and another that returns `Howdy`:
+. Deploy application with two versions of `greeting`, one that returns `Hello` and another that returns `Howdy`:
 
-  kubectl apply -f manifests/app.yaml
-  kubectl apply -f manifests/app-greeting-hello-howdy.yaml
+  kubectl delete -f manifests/app.yaml
+  kubectl apply -f <(istioctl kube-inject -f manifests/app-hello-howdy.yaml)
 
-. Access application multipe times to see different greeting messages:
+. Access application multipe times to see different response:
 
   for i in {1..10}
   do
-  	curl -q http://$(kubectl get svc/webapp -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+  	curl -q http://$(kubectl get svc/greeting -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
   	echo
   done
   
