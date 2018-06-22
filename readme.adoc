@@ -24,49 +24,48 @@ The three microservices are:
 +
 . Clone all the repos. Open each one in a separate terminal.
 . Run `greeting` service:
-+
+
 	mvn wildfly-swarm:run
-+
-Test:
-+
+
+. Test `greeting` service:
+
 	curl http://localhost:8081/resources/greeting
-+
+
 . Run `name` service:
-+
+
 	mvn wildfly-swarm:run
-+
-Test:
-+
+
+. Test `name` service:
+
 	curl http://localhost:8082/resources/names
 	curl http://localhost:8082/resources/names/1
-+
+
 . Run `webapp` service:
 
 	mvn wildfly-swarm:run
 
-. Run the application:
+. Test application:
 
 	curl http://localhost:8080/
 
 == Package as Docker image
 
-=== Create Docker Images
+. Create Docker image
 
-`mvn package -Pdocker` for each repo will create the Docker image.
+	cd app
+	docker image build -t arungupta/skaffold-greeting .
 
-By default, the Docker image name is `arungupta/<service>` where `<service>` is `greeting`, `name` or `webapp`. The image can be created in your repo:
+. Run container:
 
-  mvn package -Pdocker -Ddocker.repo=<repo>
+	docker container run --name skaffold-greeting -p 8080:8080 -p 5005:5005 -d arungupta/skaffold-greeting
 
-By default, the `latest` tag is used for the image. A different tag may be specified as:
+. Access application:
 
-  mvn package -Pdocker -Ddocker.tag=<tag>
+	curl http://localhost:8080/resources/greeting
 
-=== Push Docker Images to Registry
+. Remove container:
 
-Push Docker images to the registry:
-
-  mvn install -Pdocker
+	docker container rm -f skaffold-greeting
 
 == Test in Local Environment
 
@@ -106,11 +105,37 @@ By default, the `latest` tag for an image is used. Alternatively, a different ta
 
 	helm delete --purge myapp
 
-== Attach Debugger
+== Debug using IntelliJ
+
+. Run container:
+
+	docker container run --name skaffold-greeting -p 8080:8080 -p 5005:5005 -d arungupta/skaffold-greeting
+
+. Check container:
+
+	$ docker container ls -a
+	CONTAINER ID        IMAGE                         COMMAND                  CREATED             STATUS              PORTS                                            NAMES
+	724313157e3c        arungupta/skaffold-greeting   "java -jar app-swarm…"   3 seconds ago       Up 2 seconds        0.0.0.0:5005->5005/tcp, 0.0.0.0:8080->8080/tcp   skaffold-greeting
+
+. `Run`, `Debug`, `Remote`:
++
+image::images/docker-debug1.png[]
++
+. Click on `Debug`, setup a breakpoint in the class:
++
+image::images/docker-debug2.png[]
++
+. Access the application using `curl http://localhost:8080/resources/greeting` to hit the breakpoint:
++
+image::images/docker-debug3.png[]
 
 == Kubernetes Cluster on AWS
 
-=== Kops Cluster
+=== EKS
+
+https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html
+
+=== Kops
 
 . Set AZs:
 +
@@ -132,10 +157,6 @@ export AWS_AVAILABILITY_ZONES="$(aws ec2 describe-availability-zones \
 		--node-size m4.2xlarge \
 		--name cluster.k8s.local \
 		--yes
-
-=== EKS Cluster
-
-https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html
 
 == Migrate from Dev to Prod
 
