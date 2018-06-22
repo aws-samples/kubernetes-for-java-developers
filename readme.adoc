@@ -291,10 +291,12 @@ https://github.com/GoogleContainerTools/skaffold[Skaffold] is a command line uti
 
 . Run Skaffold in the application directory:
 
-	cd app
+    cd app
     skaffold dev
 
 . Access the service:
 
-    curl http://$(kubectl get svc/skaffold-greeting-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+    curl http://$(kubectl \
+    	get svc/skaffold-greeting-service \
+    	-o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 
