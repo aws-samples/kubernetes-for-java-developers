@@ -114,14 +114,12 @@ https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html
 https://github.com/kubernetes/kops[kops] is a commmunity-supported way to get a Kubernetes cluster up and running on AWS.
 
 . Set AZs:
-+
-```
-export AWS_AVAILABILITY_ZONES="$(aws ec2 describe-availability-zones \
-	--query 'AvailabilityZones[].ZoneName' \
-	--output text | \
-	awk -v OFS="," '$1=$1')"
-```
-+
+
+	export AWS_AVAILABILITY_ZONES="$(aws ec2 describe-availability-zones \
+		--query 'AvailabilityZones[].ZoneName' \
+		--output text | \
+		awk -v OFS="," '$1=$1')"
+
 . Set state store: `export KOPS_STATE_STORE=s3://kubernetes-aws-io`
 . Create cluster:
 
@@ -206,13 +204,13 @@ Alternatively, enable sidecar injection for the `default` namespace:
 +
   kubectl label namespace default istio-injection=enabled
 +
-. Check the pods and note that it has two containers (one for application and one for sidecar):
+. Check pods and note that it has two containers (one for application and one for sidecar):
 
 	kubectl get pods
 	NAME                        READY     STATUS    RESTARTS   AGE
 	greeting-5ff78ddc8b-pbb4z   2/2       Running   0          1m
 
-. Get the list of containers in the pod:
+. Get list of containers in the pod:
 
 	kubectl get pods -l app=greeting -o jsonpath={.items[*].spec.containers[*].name}
 	greeting istio-proxy
@@ -233,7 +231,7 @@ Alternatively, enable sidecar injection for the `default` namespace:
 
   for i in {1..10}
   do
-  	curl -q http://$(kubectl get svc/greeting -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
+  	curl -q http://$(kubectl get svc/greeting-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
   	echo
   done
   
