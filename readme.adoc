@@ -1,7 +1,7 @@
 = A Day in Java Developer's Life, with a taste of Kubernetes
 :toc:
 
-Deploying your Java application in a Kubernetes cluster could feel like Alice in Wonderland. You keep going down the rabbit hole and don't know how to make that ride comfortable. This repository explains how a Java application can be deployed, tested, debugged in Kubernetes.
+Deploying your Java application in a Kubernetes cluster could feel like Alice in Wonderland. You keep going down the rabbit hole and don't know how to make that ride comfortable. This repository explains how a Java application can be deployed, tested, debugged and monitored in Kubernetes. In addition, it also talks about canary deployment and deployment pipeline.
 
 == Application
 
@@ -24,11 +24,11 @@ The source code is in the `app` directory.
 
 . Create Docker image:
 
-	docker image build -t arungupta/skaffold-greeting .
+	docker image build -t arungupta/greeting .
 
 . Run container:
 
-	docker container run --name skaffold-greeting -p 8080:8080 -p 5005:5005 -d arungupta/skaffold-greeting
+	docker container run --name greeting -p 8080:8080 -p 5005:5005 -d arungupta/greeting
 
 . Access application:
 
@@ -36,33 +36,7 @@ The source code is in the `app` directory.
 
 . Remove container:
 
-	docker container rm -f skaffold-greeting
-
-== Debug Docker and Kubernetes using IntelliJ
-
-You can debug a Docker container and a Kubernetes Pod if they're running locally on your machine. This was tested using Docker for Mac.
-
-. Run container:
-
-	docker container run --name skaffold-greeting -p 8080:8080 -p 5005:5005 -d arungupta/skaffold-greeting
-
-. Check container:
-
-	$ docker container ls -a
-	CONTAINER ID        IMAGE                         COMMAND                  CREATED             STATUS              PORTS                                            NAMES
-	724313157e3c        arungupta/skaffold-greeting   "java -jar app-swarm…"   3 seconds ago       Up 2 seconds        0.0.0.0:5005->5005/tcp, 0.0.0.0:8080->8080/tcp   skaffold-greeting
-
-. `Run`, `Debug`, `Remote`:
-+
-image::images/docker-debug1.png[]
-+
-. Click on `Debug`, setup a breakpoint in the class:
-+
-image::images/docker-debug2.png[]
-+
-. Access the application using `curl http://localhost:8080/resources/greeting` to hit the breakpoint:
-+
-image::images/docker-debug3.png[]
+	docker container rm -f greeting
 
 == Build and Test using Kubernetes
 
@@ -87,21 +61,43 @@ If Helm has already been initialized on the cluster, then you may have to upgrad
 	helm init --upgrade
 +
 . Install the Helm chart:
-+
+
 	helm install --name myapp manifests/myapp
-+
-By default, the `latest` tag for an image is used. Alternatively, a different tag for the image can be used:
-+
-  helm install --name myapp apps/k8s/helm/myapp --set "docker.tag=<tag>"
-+
+
 . Access the application:
 
-  curl http://$(kubectl get svc/skaffold-greeting-service \
+  curl http://$(kubectl get svc/greeting-service \
   	-o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
 
 . Delete the Helm chart:
 
 	helm delete --purge myapp
+
+== Debug Docker and Kubernetes using IntelliJ
+
+You can debug a Docker container and a Kubernetes Pod if they're running locally on your machine. This was tested using Docker for Mac.
+
+. Run container:
+
+	docker container run --name greeting -p 8080:8080 -p 5005:5005 -d arungupta/greeting
+
+. Check container:
+
+	$ docker container ls -a
+	CONTAINER ID        IMAGE                COMMAND                  CREATED             STATUS              PORTS                                            NAMES
+	724313157e3c        arungupta/greeting   "java -jar app-swarm…"   3 seconds ago       Up 2 seconds        0.0.0.0:5005->5005/tcp, 0.0.0.0:8080->8080/tcp   greeting
+
+. `Run`, `Debug`, `Remote`:
++
+image::images/docker-debug1.png[]
++
+. Click on `Debug`, setup a breakpoint in the class:
++
+image::images/docker-debug2.png[]
++
+. Access the application using `curl http://localhost:8080/resources/greeting` to hit the breakpoint:
++
+image::images/docker-debug3.png[]
 
 == Kubernetes Cluster on AWS
 
