@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: skaffold-greeting
+  name: greeting
 spec:
   replicas: 1
   selector:
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: greeting
-        image: arungupta/skaffold-greeting
+        image: arungupta/greeting
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
