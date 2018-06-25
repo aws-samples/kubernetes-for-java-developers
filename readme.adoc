@@ -288,7 +288,7 @@ image::images/istio-dag.png[]
 
 . Invoke the endpoint:
 
-	curl http://$(kubectl get svc/greeting-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+	curl http://$(kubectl get svc/greeting-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
 
 image::images/istio-dashboard.png[]
 
