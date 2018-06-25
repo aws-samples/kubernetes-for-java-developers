@@ -280,8 +280,8 @@ image::images/istio-dag.png[]
 . Verify:
 
         $ kubectl get pods -l app=grafana -n istio-system
-	NAME                       READY     STATUS    RESTARTS   AGE
-	grafana-6bb556d859-v5tzt   1/1       Running   0          1m
+        NAME                       READY     STATUS    RESTARTS   AGE
+        grafana-6bb556d859-v5tzt   1/1       Running   0          1m
 
 . Forward Istio dashboard using Grafana UI:
 
