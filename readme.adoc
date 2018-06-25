@@ -121,9 +121,9 @@ https://github.com/kubernetes/kops[kops] is a commmunity-supported way to get a 
 
 	kops create cluster \
 		--zones ${AWS_AVAILABILITY_ZONES} \
+		--master-count 1 \
 		--master-size m4.xlarge \
-		--master-zones ${AWS_AVAILABILITY_ZONES} \
-		--node-count 5 \
+		--node-count 3 \
 		--node-size m4.2xlarge \
 		--name cluster.k8s.local \
 		--yes
