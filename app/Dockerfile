@@ -10,6 +10,7 @@ EXPOSE 8080 5005
 COPY --from=BUILD /usr/src/app/target /opt/target
 WORKDIR /opt/target
 ENV _JAVA_OPTIONS '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
+ENV swarm.http.port 8080
 
 CMD ["java", "-jar", "app-swarm.jar"]
 
