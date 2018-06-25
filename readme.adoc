@@ -235,7 +235,7 @@ Alternatively, enable sidecar injection for the `default` namespace:
 
   kubectl apply -f manifests/greeting-rule-75-25.yaml
 
-. Invoke the service again to see the traffic split between two greeting services.
+. Invoke the service again to see the traffic split between two services.
 
 === Canary Deployment
 
