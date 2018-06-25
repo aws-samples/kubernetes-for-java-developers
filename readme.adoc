@@ -248,7 +248,7 @@ Alternatively, enable sidecar injection for the `default` namespace:
 
   for i in {1..50}
   do
-  	curl -q http://$(kubectl get svc/webapp -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+  	curl -q http://$(kubectl get svc/greeting-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
   	echo
   done
 
