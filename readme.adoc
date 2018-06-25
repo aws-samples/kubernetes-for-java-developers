@@ -218,6 +218,8 @@ Alternatively, enable sidecar injection for the `default` namespace:
 
 === Traffic Shifting
 
+image::images/istio-traffic-shifting.gif[]
+
 . Deploy application with two versions of `greeting`, one that returns `Hello` and another that returns `Howdy`:
 
   kubectl delete -f manifests/app.yaml
@@ -286,7 +288,7 @@ image::images/istio-dag.png[]
 
 . Invoke the endpoint:
 
-	curl http://$(kubectl get svc/webapp -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+	curl http://$(kubectl get svc/greeting-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 
 image::images/istio-dashboard.png[]
 
