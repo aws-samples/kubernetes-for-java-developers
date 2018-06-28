@@ -158,7 +158,9 @@ https://istio.io/[Istio] is is a layer 4/7 proxy that routes and load balances t
 
 Istio has a wide variety of traffic management features that live outside the application code, such as A/B testing, phased/canary rollouts, failure recovery, circuit breaker, layer 7 routing and policy enforcement (all provided by the Envoy proxy). Istio also supports ACLs, rate limits, quotas, authentication, request tracing and telemetry collection using its Mixer component. The goal of the Istio project is to support traffic management and security of microservices without requiring any changes to the application; it does this by injecting a sidecar into your pod that handles all network communications.
 
-video::os8MbZRDeiw[youtube]
+++++
+<iframe width="560" height="315" src="https://www.youtube.com/embed/os8MbZRDeiw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+++++
 
 === Install and Configure
 
