@@ -176,34 +176,28 @@ Alternatively, create the cluster without `--yes`, edit the cluster to enable ad
 	kubectl apply -f install/kubernetes/istio-demo.yaml
 
 . Verify:
-+
-```
-kubectl get pods -n istio-system
-NAME                                        READY     STATUS      RESTARTS   AGE
-grafana-cd99bf478-59qmx                     1/1       Running     0          4m
-istio-citadel-ff5696f6f-zkpzt               1/1       Running     0          4m
-istio-cleanup-old-ca-6nmrg                  0/1       Completed   0          4m
-istio-egressgateway-58d98d898c-bjd4f        1/1       Running     0          4m
-istio-ingressgateway-6bc7c7c4bc-sc7s6       1/1       Running     0          4m
-istio-mixer-post-install-g67rd              0/1       Completed   0          4m
-istio-pilot-6c5c6b586c-nfwt9                2/2       Running     0          4m
-istio-policy-5c7fbb4b9f-f2xtn               2/2       Running     0          4m
-istio-sidecar-injector-dbd67c88d-j8882      1/1       Running     0          4m
-istio-statsd-prom-bridge-6dbb7dcc7f-ms846   1/1       Running     0          4m
-istio-telemetry-54b5bf4847-nlqjx            2/2       Running     0          4m
-istio-tracing-67dbb5b89f-9zd5j              1/1       Running     0          4m
-prometheus-586d95b8d9-mz9bm                 1/1       Running     0          4m
-servicegraph-6d86dfc6cb-tbwwt               1/1       Running     0          4m
-```
-+
+
+	kubectl get pods -n istio-system
+	NAME                                        READY     STATUS      RESTARTS   AGE
+	grafana-cd99bf478-59qmx                     1/1       Running     0          4m
+	istio-citadel-ff5696f6f-zkpzt               1/1       Running     0          4m
+	istio-cleanup-old-ca-6nmrg                  0/1       Completed   0          4m
+	istio-egressgateway-58d98d898c-bjd4f        1/1       Running     0          4m
+	istio-ingressgateway-6bc7c7c4bc-sc7s6       1/1       Running     0          4m
+	istio-mixer-post-install-g67rd              0/1       Completed   0          4m
+	istio-pilot-6c5c6b586c-nfwt9                2/2       Running     0          4m
+	istio-policy-5c7fbb4b9f-f2xtn               2/2       Running     0          4m
+	istio-sidecar-injector-dbd67c88d-j8882      1/1       Running     0          4m
+	istio-statsd-prom-bridge-6dbb7dcc7f-ms846   1/1       Running     0          4m
+	istio-telemetry-54b5bf4847-nlqjx            2/2       Running     0          4m
+	istio-tracing-67dbb5b89f-9zd5j              1/1       Running     0          4m
+	prometheus-586d95b8d9-mz9bm                 1/1       Running     0          4m
+	servicegraph-6d86dfc6cb-tbwwt               1/1       Running     0          4m
+
 . Deploy pod with sidecar:
-+
+
 	kubectl apply -f <(istioctl kube-inject -f manifests/app.yaml)
-+
-Alternatively, enable sidecar injection for the `default` namespace:
-+
-  kubectl label namespace default istio-injection=enabled
-+
+
 . Check pods and note that it has two containers (one for application and one for sidecar):
 
 	kubectl get pods
@@ -299,6 +293,18 @@ image::images/istio-dag.png[]
 	curl http://$(kubectl get svc/greeting-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
 
 image::images/istio-dashboard.png[]
+
+=== Timeouts
+
+Delays and timeouts can be injected in services:
+
+. Add a 5 seconds delay to calls to the service:
+
+    kubectl apply -f manifests/greeting-delay.yaml
+
+. Invoke the service using a 2 seconds timeout:
+
+    curl --connect-timeout 2 http://$(kubectl get svc/greeting-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
 
 == Deployment Pipeline
 
