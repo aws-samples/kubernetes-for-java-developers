@@ -9,12 +9,11 @@ spec:
   - fault:
       delay:
         percent: 100
-        fixedDelay: 10s
+        fixedDelay: 5s
     route:
     - destination:
         host: greeting
         subset: greeting-hello
-      weight: 100
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
