@@ -20,7 +20,7 @@ metadata:
 spec:
   hosts:
   - greeting
-  gateway:
+  gateways:
   - greeting
   http:
   - match:
