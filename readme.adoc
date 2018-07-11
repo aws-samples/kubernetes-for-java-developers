@@ -306,7 +306,7 @@ Delays and timeouts can be injected in services:
 
     curl --connect-timeout 2 http://$(kubectl get svc/greeting-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
 
-== Chaos using kube-moneky
+== Chaos using kube-monkey
 
 https://github.com/asobti/kube-monkey[kube-monkey] is an implementation of Netflix's Chaos Monkey for Kubernetes clusters. It randomly deletes Kubernetes pods in the cluster encouraging and validating the development of failure-resilient services.
 
