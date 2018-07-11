@@ -306,6 +306,24 @@ Delays and timeouts can be injected in services:
 
     curl --connect-timeout 2 http://$(kubectl get svc/greeting-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
 
+== Chaos using kube-moneky
+
+https://github.com/asobti/kube-monkey[kube-monkey] is an implementation of Netflix's Chaos Monkey for Kubernetes clusters. It randomly deletes Kubernetes pods in the cluster encouraging and validating the development of failure-resilient services.
+
+. Create kube-monkey configuration:
+
+	kubectl apply -f manifests/kube-monkey-configmap.yaml 
+
+. Run kube-monkey:
+
+	kubectl apply -f manifests/kube-monkey-deployment.yaml
+
+. Deploy an app that opts-in for pod deletion:
+
+	kubectl apply -f manifests/app-kube-monkey.yaml
+
+This application agrees to kill up to 40% of pods. The schedule of deletion is defined by kube-monkey configuration and is defined to be between 10am and 4pm on weekdays.
+
 == Deployment Pipeline
 
 https://github.com/GoogleContainerTools/skaffold[Skaffold] is a command line utility that facilitates continuous development for Kubernetes applications. With Skaffold, you can iterate on your application source code locally then deploy it to a remote Kubernetes cluster.

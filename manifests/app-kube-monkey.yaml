@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeting
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: greeting
+  template:
+    metadata:
+      labels:
+        app: greeting
+        kube-monkey/enabled: enabled
+        kube-monkey/identifier: monkey-victim-pods
+        kube-monkey/mtbf: 2
+        kube-monkey/kill-mode: random-max-percent
+        kube-monkey/kill-value: 40
+    spec:
+      containers:
+      - name: greeting
+        image: arungupta/greeting
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: "http"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: greeting
+spec:
+  selector:
+    app: greeting
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
