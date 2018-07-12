@@ -296,7 +296,12 @@ image::images/istio-dashboard.png[]
 
 === Timeouts
 
-Delays and timeouts can be injected in services:
+Delays and timeouts can be injected in services.
+
+. Deploy the application:
+
+   kubectl delete -f manifests/app.yaml
+   kubectl apply -f <(istioctl kube-inject -f manifests/app-ingress.yaml)
 
 . Add a 5 seconds delay to calls to the service:
 
@@ -304,7 +309,10 @@ Delays and timeouts can be injected in services:
 
 . Invoke the service using a 2 seconds timeout:
 
-    curl --connect-timeout 2 http://$(kubectl get svc/greeting-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
+	export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+	export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http")].port}')
+	export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
+    curl --connect-timeout 2 http://$GATEWAY_URL/resources/greeting
 
 == Chaos using kube-monkey
 
