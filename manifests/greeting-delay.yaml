@@ -19,7 +19,7 @@ metadata:
   name: greeting
 spec:
   hosts:
-  - greeting
+  - "*"
   gateways:
   - greeting
   http:
