@@ -314,6 +314,8 @@ Delays and timeouts can be injected in services.
 	export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
     curl --connect-timeout 2 http://$GATEWAY_URL/resources/greeting
 
+The service will timeout in 2 seconds.
+
 == Chaos using kube-monkey
 
 https://github.com/asobti/kube-monkey[kube-monkey] is an implementation of Netflix's Chaos Monkey for Kubernetes clusters. It randomly deletes Kubernetes pods in the cluster encouraging and validating the development of failure-resilient services.
