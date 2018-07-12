@@ -312,7 +312,7 @@ Delays and timeouts can be injected in services.
 	export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 	export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http")].port}')
 	export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
-    curl --connect-timeout 2 http://$GATEWAY_URL/resources/greeting
+	curl --connect-timeout 2 http://$GATEWAY_URL/resources/greeting
 
 The service will timeout in 2 seconds.
 
