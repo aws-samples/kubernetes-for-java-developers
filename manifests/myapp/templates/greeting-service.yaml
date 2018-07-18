@@ -3,7 +3,6 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}-greeting
   labels:
-    name: {{ .Release.Name }}-greeting
     {{- template "labels" . }}
 spec:
   selector:
@@ -12,5 +11,5 @@ spec:
   - name: http
     protocol: TCP
     port: 80
-    port: 8080
+    targetPort: http
   type: LoadBalancer

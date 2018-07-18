@@ -4,14 +4,14 @@ metadata:
   name: greeting
 spec:
   selector:
-    istio: ingressgateway
+    istio: ingressgateway # use istio default controller
   servers:
   - port:
       number: 80
       name: http
       protocol: HTTP
     hosts:
-    - greeting.com
+    - "*"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -19,7 +19,7 @@ metadata:
   name: greeting
 spec:
   hosts:
-  - greeting.com
+  - "*"
   gateways:
   - greeting
   http:
@@ -32,6 +32,6 @@ spec:
         fixedDelay: 5s
     route:
     - destination:
-        host: greeting.default.svc.cluster.local
+        host: "*"
         port:
           number: 8080

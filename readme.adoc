@@ -64,9 +64,20 @@ If Helm has already been initialized on the cluster, then you may have to upgrad
 
 	helm install --name myapp manifests/myapp
 
+. Or, install without the Helm CLI:
+
+	kubectl apply -f manifests/app.yaml
+
+. Create the ingress controller
+
+	kubectl apply -f manifests/greeting-delay.yaml
+
 . Access the application:
 
-  curl http://$(kubectl get svc/greeting-service \
+Note: use the correct service name; it is `svc/myapp-greeting` if created with Helm,
+or it is `svc/greeting` if created with kubectl.
+
+  curl http://$(kubectl get svc/myapp-greeting \
   	-o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
 
 . Delete the Helm chart:

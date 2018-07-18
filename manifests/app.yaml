@@ -18,7 +18,7 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
-          name: "http"
+          name: http
 ---
 apiVersion: v1
 kind: Service
@@ -31,5 +31,5 @@ spec:
   - name: http
     protocol: TCP
     port: 80
-    targetPort: 8080
+    targetPort: http
   type: LoadBalancer

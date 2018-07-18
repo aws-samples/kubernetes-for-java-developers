@@ -1,23 +1,26 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}-greeting
   labels:
-    name: {{ .Release.Name }}-greeting
     {{- template "labels" . }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.greeting.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-greeting
   template:
     metadata:
       labels:
         app: {{ .Release.Name }}-greeting
     spec:
       containers:
-      - name: greeting
+      - name: {{ .Release.Name }}-greeting
         image: {{ .Values.greeting.image }}:{{ .Values.docker.tag }}
         imagePullPolicy: Always
         ports:
-        - containerPort: 8081
+        - containerPort: 8080
+          name: http
         readinessProbe:
           httpGet:
             path: /resources/greeting
