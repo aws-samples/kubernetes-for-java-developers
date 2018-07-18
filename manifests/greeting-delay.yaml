@@ -11,7 +11,7 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - "*"
+    - greeting.default.svc.cluster.local
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -19,7 +19,7 @@ metadata:
   name: greeting
 spec:
   hosts:
-  - "*"
+  - greeting.default.svc.cluster.local
   gateways:
   - greeting
   http:
@@ -32,6 +32,6 @@ spec:
   #       fixedDelay: 5s
     route:
     - destination:
-        host: greeting
+        host: greeting.default.svc.cluster.local
         port:
           number: 8080
