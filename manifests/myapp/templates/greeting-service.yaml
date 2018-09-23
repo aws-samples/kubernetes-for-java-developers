@@ -13,4 +13,7 @@ spec:
     protocol: TCP
     port: 80
     port: 8080
+  - name: debug
+    protocol: TCP
+    port: 5005
   type: LoadBalancer
