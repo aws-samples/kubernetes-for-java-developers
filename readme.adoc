@@ -468,14 +468,11 @@ https://github.com/GoogleContainerTools/skaffold[Skaffold] is a command line uti
 	curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-darwin-amd64 \
 		&& chmod +x skaffold
 
+. Open http://localhost:8080/resources/greeting in browser. This will show the page is not available.
 . Run Skaffold in the application directory:
 
     cd app
     skaffold dev
 
-. Access the service:
-
-	curl http://$(kubectl \
-		get svc/greeting \
-		-o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
+. Refresh the page in browser to see the output.
 
