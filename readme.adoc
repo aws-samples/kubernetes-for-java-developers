@@ -87,13 +87,49 @@ If Helm has already been initialized on the cluster, then you may have to upgrad
   curl http://$(kubectl get svc/myapp-greeting \
   	-o jsonpath='{.status.loadBalancer.ingress[0].hostname}'):8080/resources/greeting
 
+== Debug Docker and Kubernetes using IntelliJ
+
+You can debug a Docker container and a Kubernetes Pod if they're running locally on your machine.
+
+=== Debug using Kubernetes
+
+This was tested using Docker for Mac/Kubernetes. Use the previously deployed Helm chart.
+
+. Show service:
++
+```
+kubectl get svc
+NAME               TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
+greeting-service   LoadBalancer   10.101.39.100    <pending>     80:30854/TCP                    8m
+kubernetes         ClusterIP      10.96.0.1        <none>        443/TCP                         90d
+myapp-greeting     LoadBalancer   10.108.104.178   localhost     8080:32189/TCP,5005:31117/TCP   4s
++
+Highlight the debug port is also forwarded.
++
+. In IntelliJ, `Run`, `Debug`, `Remote`:
++
+image::images/docker-debug1.png[]
++
+. Click on `Debug`, setup a breakpoint in the class:
++
+image::images/docker-debug2.png[]
++
+. Access the application:
+
+	curl http://$(kubectl get svc/myapp-greeting \
+		-o jsonpath='{.status.loadBalancer.ingress[0].hostname}'):8080/resources/greeting
+
+. Show the breakpoint hit in IntelliJ:
++
+image::images/docker-debug3.png[]
++
 . Delete the Helm chart:
 
 	helm delete --purge myapp
 
-== Debug Docker and Kubernetes using IntelliJ
+=== Debug using Docker
 
-You can debug a Docker container and a Kubernetes Pod if they're running locally on your machine. This was tested using Docker for Mac.
+This was tested using Docker for Mac.
 
 . Run container:
 
@@ -105,17 +141,8 @@ You can debug a Docker container and a Kubernetes Pod if they're running locally
 	CONTAINER ID        IMAGE                COMMAND                  CREATED             STATUS              PORTS                                            NAMES
 	724313157e3c        arungupta/greeting   "java -jar app-swarm…"   3 seconds ago       Up 2 seconds        0.0.0.0:5005->5005/tcp, 0.0.0.0:8080->8080/tcp   greeting
 
-. `Run`, `Debug`, `Remote`:
-+
-image::images/docker-debug1.png[]
-+
-. Click on `Debug`, setup a breakpoint in the class:
-+
-image::images/docker-debug2.png[]
-+
-. Access the application using `curl http://localhost:8080/resources/greeting` to hit the breakpoint:
-+
-image::images/docker-debug3.png[]
+. Setup breakpoint as explained above.
+. Access the application using `curl http://localhost:8080/resources/greeting`.
 
 == Kubernetes Cluster on AWS
 
