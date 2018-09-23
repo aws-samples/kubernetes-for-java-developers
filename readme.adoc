@@ -147,56 +147,96 @@ This was tested using Docker for Mac.
 
 == Kubernetes Cluster on AWS
 
-=== EKS
+This application will be deployed to an Amazon EKS cluster. Let's create the cluster first.
 
-https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html
+. Install eksctl:
 
-=== kops
+	brew install weaveworks/tap/eksctl
 
-https://github.com/kubernetes/kops[kops] is a commmunity-supported way to get a Kubernetes cluster up and running on AWS.
+. Download AWS IAM Authenticator:
++
+	curl -o heptio-authenticator-aws https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/darwin/amd64/aws-iam-authenticator
++
+This workaround is required until https://github.com/weaveworks/eksctl/issues/169 is fixed. Include the download directory in your `PATH`.
++
+. Create EKS cluster:
 
-. Set AZs:
+	eksctl create cluster --name myeks --nodes 4 --region us-east-1
+	2018-09-22T22:12:22-07:00 [ℹ]  setting availability zones to [us-east-1f us-east-1d us-east-1c]
+	2018-09-22T22:12:23-07:00 [ℹ]  using "ami-0b2ae3c6bda8b5c06" for nodes
+	2018-09-22T22:12:23-07:00 [ℹ]  creating EKS cluster "myeks" in "us-east-1" region
+	2018-09-22T22:12:23-07:00 [ℹ]  will create 2 separate CloudFormation stacks for cluster itself and the initial nodegroup
+	2018-09-22T22:12:23-07:00 [ℹ]  if you encounter any issues, check CloudFormation console or try 'eksctl utils describe-stacks --region=us-east-1 --name=myeks'
+	2018-09-22T22:12:23-07:00 [ℹ]  creating cluster stack "eksctl-myeks-cluster"
+	2018-09-22T22:23:12-07:00 [ℹ]  creating nodegroup stack "eksctl-myeks-nodegroup-0"
+	2018-09-22T22:26:46-07:00 [✔]  all EKS cluster resource for "myeks" had been created
+	2018-09-22T22:26:46-07:00 [✔]  saved kubeconfig as "/Users/argu/.kube/config"
+	2018-09-22T22:26:50-07:00 [ℹ]  the cluster has 0 nodes
+	2018-09-22T22:26:50-07:00 [ℹ]  waiting for at least 4 nodes to become ready
+	2018-09-22T22:27:21-07:00 [ℹ]  the cluster has 4 nodes
+	2018-09-22T22:27:21-07:00 [ℹ]  node "ip-192-168-140-209.ec2.internal" is ready
+	2018-09-22T22:27:21-07:00 [ℹ]  node "ip-192-168-144-7.ec2.internal" is ready
+	2018-09-22T22:27:21-07:00 [ℹ]  node "ip-192-168-225-70.ec2.internal" is ready
+	2018-09-22T22:27:21-07:00 [ℹ]  node "ip-192-168-81-149.ec2.internal" is ready
+	2018-09-22T22:27:21-07:00 [ℹ]  kubectl command should work with "/Users/argu/.kube/config", try 'kubectl get nodes'
+	2018-09-22T22:27:21-07:00 [✔]  EKS cluster "myeks" in "us-east-1" region is ready
 
-	export AWS_AVAILABILITY_ZONES="$(aws ec2 describe-availability-zones \
-		--query 'AvailabilityZones[].ZoneName' \
-		--output text | \
-		awk -v OFS="," '$1=$1')"
+. Check the nodes:
 
-. Set state store: `export KOPS_STATE_STORE=s3://kubernetes-aws-io`
-. Create cluster:
+	kubectl get nodes
+	NAME                              STATUS    ROLES     AGE       VERSION
+	ip-192-168-140-209.ec2.internal   Ready     <none>    1m        v1.10.3
+	ip-192-168-144-7.ec2.internal     Ready     <none>    1m        v1.10.3
+	ip-192-168-225-70.ec2.internal    Ready     <none>    1m        v1.10.3
+	ip-192-168-81-149.ec2.internal    Ready     <none>    1m        v1.10.3
 
-	kops create cluster \
-		--zones ${AWS_AVAILABILITY_ZONES} \
-		--master-count 1 \
-		--master-size m4.xlarge \
-		--node-count 3 \
-		--node-size m4.2xlarge \
-		--name cluster.k8s.local \
-		--yes
+. Get the list of configs:
++
+```
+	kubectl config get-contexts
+	CURRENT   NAME                               CLUSTER                       AUTHINFO                           NAMESPACE
+	          arun@eks-gpu.us-west-2.eksctl.io   eks-gpu.us-west-2.eksctl.io   arun@eks-gpu.us-west-2.eksctl.io   
+	*         arun@myeks.us-east-1.eksctl.io     myeks.us-east-1.eksctl.io     arun@myeks.us-east-1.eksctl.io     
+	          docker-for-desktop                 docker-for-desktop-cluster    docker-for-desktop   
+```
++
+As indicated by the `*`, kubectl CLI configuration is updated to the recently created cluster.
 
 == Migrate from Dev to Prod
 
-. Get the list of configs:
+. Explicitly set the context:
 
-	$ kubectl config get-contexts
-	CURRENT   NAME                 CLUSTER                      AUTHINFO             NAMESPACE
-	          aws                  kubernetes                   aws                  
-	          cluster.k8s.local    cluster.k8s.local            cluster.k8s.local    
-	*         docker-for-desktop   docker-for-desktop-cluster   docker-for-desktop   
+    kubectl config use-context arun@myeks.us-east-1.eksctl.io
 
-. Change the context:
+. Install Helm:
 
-    kubectl config use-context cluster.k8s.local
+	kubectl -n kube-system create sa tiller
+	kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+	helm init --service-account tiller
 
-. Get updated list of configs:
+. Check the list of pods:
 
-	$ kubectl config get-contexts
-	CURRENT   NAME                 CLUSTER                      AUTHINFO             NAMESPACE
-	          aws                  kubernetes                   aws                  
-	*         cluster.k8s.local    cluster.k8s.local            cluster.k8s.local    
-	          docker-for-desktop   docker-for-desktop-cluster   docker-for-desktop
+	kubectl get pods -n kube-system
+	NAME                            READY     STATUS    RESTARTS   AGE
+	aws-node-7vs5w                  1/1       Running   0          6m
+	aws-node-8t4sb                  1/1       Running   1          6m
+	aws-node-d9jxv                  1/1       Running   1          6m
+	aws-node-sdfbd                  1/1       Running   0          6m
+	kube-dns-64b69465b4-z9rcq       3/3       Running   0          12m
+	kube-proxy-2gr82                1/1       Running   0          6m
+	kube-proxy-bn28f                1/1       Running   0          6m
+	kube-proxy-ng4xh                1/1       Running   0          6m
+	kube-proxy-rjj8x                1/1       Running   0          6m
+	tiller-deploy-895d57dd9-7z4xb   1/1       Running   0          21s
 
-. Redeploy the application
+. Redeploy the application:
+
+	helm install --name myapp manifests/myapp
+
+. Access the application:
+
+	curl http://$(kubectl get svc/myapp-greeting \
+		-o jsonpath='{.status.loadBalancer.ingress[0].hostname}'):8080/resources/greeting
 
 == Istio
 
