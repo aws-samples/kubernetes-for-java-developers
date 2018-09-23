@@ -145,9 +145,9 @@ This was tested using Docker for Mac.
 
 == Kubernetes Cluster on AWS
 
-This application will be deployed to an Amazon EKS cluster. Let's create the cluster first.
+This application will be deployed to an https://aws.amazon.com/eks/[Amazon EKS cluster]. Let's create the cluster first.
 
-. Install eksctl:
+. Install http://eksctl.io/[eksctl] CLI:
 
 	brew install weaveworks/tap/eksctl
 
@@ -155,7 +155,7 @@ This application will be deployed to an Amazon EKS cluster. Let's create the clu
 +
 	curl -o heptio-authenticator-aws https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/darwin/amd64/aws-iam-authenticator
 +
-This workaround is required until https://github.com/weaveworks/eksctl/issues/169 is fixed. Include the download directory in your `PATH`.
+This workaround is required until https://github.com/weaveworks/eksctl/issues/169 is fixed. Include the directory where the CLI is downloaded to your `PATH`.
 +
 . Create EKS cluster:
 
