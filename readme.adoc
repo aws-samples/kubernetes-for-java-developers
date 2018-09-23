@@ -389,9 +389,9 @@ image::images/istio-dag.png[]
 
 . Verify:
 
-        kubectl get pods -l app=grafana -n istio-system
-        NAME                       READY     STATUS    RESTARTS   AGE
-        grafana-6bb556d859-v5tzt   1/1       Running   0          1m
+	kubectl get pods -l app=grafana -n istio-system
+	NAME                       READY     STATUS    RESTARTS   AGE
+	grafana-75485f89b9-n4skw   1/1       Running   0          10m
 
 . Forward Istio dashboard using Grafana UI:
 
@@ -404,7 +404,8 @@ image::images/istio-dag.png[]
 
 . Invoke the endpoint:
 
-	curl http://$(kubectl get svc/greeting-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
+	curl http://$(kubectl get svc/greeting \
+		-o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
 
 image::images/istio-dashboard.png[]
 
