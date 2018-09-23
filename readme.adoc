@@ -233,6 +233,15 @@ As indicated by the `*`, kubectl CLI configuration is updated to the recently cr
 
 	helm install --name myapp manifests/myapp
 
+. Get the service:
++
+	kubectl get svc
+	NAME             TYPE           CLUSTER-IP       EXTERNAL-IP                                                             PORT(S)                         AGE
+	kubernetes       ClusterIP      10.100.0.1       <none>                                                                  443/TCP                         17m
+	myapp-greeting   LoadBalancer   10.100.241.250   a8713338abef211e8970816cb629d414-71232674.us-east-1.elb.amazonaws.com   8080:32626/TCP,5005:30739/TCP   2m
++
+It shows the port `8080` and `5005` are published and an Elastic Load Balancer is provisioned. It takes about three minutes for the load balancer to be ready.
++
 . Access the application:
 
 	curl http://$(kubectl get svc/myapp-greeting \
