@@ -18,9 +18,3 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8081
-        readinessProbe:
-          httpGet:
-            path: /resources/greeting
-            port: 8081
-          initialDelaySeconds: 50
-          periodSeconds: 5
