@@ -275,22 +275,28 @@ More details at https://aws.amazon.com/blogs/opensource/getting-started-istio-ek
 		--namespace istio-system \
 		install/kubernetes/helm/istio \
 		--set global.configValidation=false \
-		--set sidecarInjectorWebhook.enabled=false
+		--set sidecarInjectorWebhook.enabled=false \
+		--set tracing.enabled=true \
+		--set grafana.enabled=true
 
 . Verify:
-
++
 	kubectl get pods -n istio-system
 	NAME                                        READY     STATUS    RESTARTS   AGE
-	istio-citadel-84fb7985bf-phr65              1/1       Running   0          2m
-	istio-egressgateway-bd9fb967d-4k6wj         1/1       Running   0          2m
-	istio-galley-655c4f9ccd-9k9mb               1/1       Running   0          2m
-	istio-ingressgateway-688865c5f7-lc7hz       1/1       Running   0          2m
-	istio-pilot-6cd69dc444-cvswb                2/2       Running   0          2m
-	istio-policy-6b9f4697d-vdkwf                2/2       Running   0          2m
-	istio-statsd-prom-bridge-7f44bb5ddb-qvtdh   1/1       Running   0          2m
-	istio-telemetry-6b5579595f-k9krz            2/2       Running   0          2m
-	prometheus-84bd4b9796-ll4zs                 1/1       Running   0          2m
-
+	grafana-75485f89b9-n4skw                    1/1       Running   0          1m
+	istio-citadel-84fb7985bf-bv2tm              1/1       Running   0          1m
+	istio-egressgateway-bd9fb967d-qls6z         1/1       Running   0          1m
+	istio-galley-655c4f9ccd-nblsb               1/1       Running   0          1m
+	istio-ingressgateway-688865c5f7-xmm46       1/1       Running   0          1m
+	istio-pilot-6cd69dc444-5j8kv                2/2       Running   0          1m
+	istio-policy-6b9f4697d-fpr9g                2/2       Running   0          1m
+	istio-statsd-prom-bridge-7f44bb5ddb-rlt77   1/1       Running   0          1m
+	istio-telemetry-6b5579595f-f7bd7            2/2       Running   0          1m
+	istio-tracing-ff94688bb-47zlc               1/1       Running   0          1m
+	prometheus-84bd4b9796-lrkkv                 1/1       Running   0          1m
++
+Check that both Tracing and Grafana add-ons are enabled.
++
 . From the repo's main directory, deploy pod with sidecar:
 
 	kubectl apply -f <(istioctl kube-inject -f manifests/app.yaml)
@@ -360,6 +366,8 @@ It takes about three minutes for the ELB to be ready to receive requests.
 
 Istio is deployed as a sidecar proxy into each of your pods; this means it can see and monitor all the traffic flows between your microservices and generate a graphical representation of your mesh traffic. We’ll use the application you deployed in the previous step to demonstrate this.
 
+By default, tracing is disabled. `--set tracing.enabled=true` was used during Istio installation to ensure tracing was enabled.
+
 Setup access to the tracing dashboard URL using port-forwarding:
 
 	kubectl port-forward \
@@ -375,7 +383,7 @@ image::images/istio-dag.png[]
 
 === Metrics using Grafana
 
-. Install the Grafana add-on:
+. By default, Grafana is disabled. `--set grafana.enabled=true` was used during Istio installation to ensure Grafana was enabled. Alternatively, the Grafana add-on can be installed as:
 
 	kubectl apply -f install/kubernetes/addons/grafana.yaml
 
