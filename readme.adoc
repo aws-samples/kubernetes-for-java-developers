@@ -42,6 +42,10 @@ The source code is in the `app` directory.
 
 Kubernetes can be easily enabled on a development machine using Docker for Mac as explained at https://docs.docker.com/docker-for-mac/#kubernetes.
 
+. Show the list of contexts:
+
+    kubectl config get-contexts
+
 . Configure kubectl CLI for Kubernetes cluster
 
 	kubectl config use-context docker-for-desktop
