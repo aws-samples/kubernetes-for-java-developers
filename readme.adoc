@@ -103,6 +103,7 @@ NAME               TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)        
 greeting-service   LoadBalancer   10.101.39.100    <pending>     80:30854/TCP                    8m
 kubernetes         ClusterIP      10.96.0.1        <none>        443/TCP                         90d
 myapp-greeting     LoadBalancer   10.108.104.178   localhost     8080:32189/TCP,5005:31117/TCP   4s
+```
 +
 Highlight the debug port is also forwarded.
 +
