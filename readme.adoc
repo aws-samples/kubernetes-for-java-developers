@@ -475,7 +475,7 @@ https://github.com/GoogleContainerTools/skaffold[Skaffold] is a command line uti
 
 . Access the service:
 
-    curl http://$(kubectl \
+	curl http://$(kubectl \
 		get svc/greeting \
 		-o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
 
