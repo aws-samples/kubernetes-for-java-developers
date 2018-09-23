@@ -6,5 +6,5 @@ build:
 deploy:
   kubectl:
     manifests:
-      - greeting-*.yaml
+      - app.yaml
 

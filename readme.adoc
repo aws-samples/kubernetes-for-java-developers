@@ -23,12 +23,14 @@ The source code is in the `app` directory.
 == Build and Test using Docker
 
 . Create Docker image:
-
++
 	docker image build -t arungupta/greeting .
-
++
+Explain multi-stage Dockerfile.
++
 . Run container:
 
-	docker container run --name greeting -p 8080:8080 -p 5005:5005 -d arungupta/greeting
+	docker container run --name greeting -p 8080:8080 -d arungupta/greeting
 
 . Access application:
 
@@ -449,6 +451,18 @@ This application agrees to kill up to 40% of pods. The schedule of deletion is d
 
 https://github.com/GoogleContainerTools/skaffold[Skaffold] is a command line utility that facilitates continuous development for Kubernetes applications. With Skaffold, you can iterate on your application source code locally then deploy it to a remote Kubernetes cluster.
 
+. Check context:
+
+	kubectl config get-contexts
+	CURRENT   NAME                               CLUSTER                       AUTHINFO                           NAMESPACE
+	          arun@eks-gpu.us-west-2.eksctl.io   eks-gpu.us-west-2.eksctl.io   arun@eks-gpu.us-west-2.eksctl.io   
+	*         arun@myeks.us-east-1.eksctl.io     myeks.us-east-1.eksctl.io     arun@myeks.us-east-1.eksctl.io     
+	          docker-for-desktop                 docker-for-desktop-cluster    docker-for-desktop
+
+. Change to use local Kubernetes cluster:
+
+	kubectl config use-context docker-for-desktop
+
 . Download Skaffold:
 
 	curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-darwin-amd64 \
@@ -462,6 +476,6 @@ https://github.com/GoogleContainerTools/skaffold[Skaffold] is a command line uti
 . Access the service:
 
     curl http://$(kubectl \
-    	get svc/skaffold-greeting-service \
-    	-o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+		get svc/greeting \
+		-o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
 
