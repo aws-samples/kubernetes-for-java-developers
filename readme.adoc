@@ -97,13 +97,11 @@ This was tested using Docker for Mac/Kubernetes. Use the previously deployed Hel
 
 . Show service:
 +
-```
-kubectl get svc
-NAME               TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
-greeting-service   LoadBalancer   10.101.39.100    <pending>     80:30854/TCP                    8m
-kubernetes         ClusterIP      10.96.0.1        <none>        443/TCP                         90d
-myapp-greeting     LoadBalancer   10.108.104.178   localhost     8080:32189/TCP,5005:31117/TCP   4s
-```
+	kubectl get svc
+	NAME               TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
+	greeting-service   LoadBalancer   10.101.39.100    <pending>     80:30854/TCP                    8m
+	kubernetes         ClusterIP      10.96.0.1        <none>        443/TCP                         90d
+	myapp-greeting     LoadBalancer   10.108.104.178   localhost     8080:32189/TCP,5005:31117/TCP   4s
 +
 Highlight the debug port is also forwarded.
 +
@@ -192,13 +190,11 @@ This workaround is required until https://github.com/weaveworks/eksctl/issues/16
 
 . Get the list of configs:
 +
-```
 	kubectl config get-contexts
 	CURRENT   NAME                               CLUSTER                       AUTHINFO                           NAMESPACE
 	          arun@eks-gpu.us-west-2.eksctl.io   eks-gpu.us-west-2.eksctl.io   arun@eks-gpu.us-west-2.eksctl.io   
 	*         arun@myeks.us-east-1.eksctl.io     myeks.us-east-1.eksctl.io     arun@myeks.us-east-1.eksctl.io     
 	          docker-for-desktop                 docker-for-desktop-cluster    docker-for-desktop   
-```
 +
 As indicated by the `*`, kubectl CLI configuration is updated to the recently created cluster.
 
