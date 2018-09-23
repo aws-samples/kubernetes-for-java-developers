@@ -42,9 +42,11 @@ The source code is in the `app` directory.
 
 Kubernetes can be easily enabled on a development machine using Docker for Mac as explained at https://docs.docker.com/docker-for-mac/#kubernetes.
 
+. Ensure that Kubernetes is enabled in Docker for Mac
 . Show the list of contexts:
 
     kubectl config get-contexts
+
 
 . Configure kubectl CLI for Kubernetes cluster
 
@@ -56,6 +58,10 @@ Kubernetes can be easily enabled on a development machine using Docker for Mac a
 +
 If Helm CLI is already installed then use `brew upgrade kubernetes-helm`.
 +
+. Check Helm version:
+
+	helm version
+
 . Install Helm in Kubernetes cluster:
 +
 	helm init
@@ -68,10 +74,18 @@ If Helm has already been initialized on the cluster, then you may have to upgrad
 
 	helm install --name myapp manifests/myapp
 
+. Check that the pod is running:
+
+	kubectl get pods
+
+. Check that the service is up:
+
+	kubectl get svc
+
 . Access the application:
 
-  curl http://$(kubectl get svc/greeting-service \
-  	-o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
+  curl http://$(kubectl get svc/myapp-greeting \
+  	-o jsonpath='{.status.loadBalancer.ingress[0].hostname}'):8080/resources/greeting
 
 . Delete the Helm chart:
 
