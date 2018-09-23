@@ -247,6 +247,10 @@ It shows the port `8080` and `5005` are published and an Elastic Load Balancer i
 	curl http://$(kubectl get svc/myapp-greeting \
 		-o jsonpath='{.status.loadBalancer.ingress[0].hostname}'):8080/resources/greeting
 
+. Delete the application:
+
+	helm delete --purge myapp
+
 == Istio
 
 https://istio.io/[Istio] is is a layer 4/7 proxy that routes and load balances traffic over HTTP, WebSocket, HTTP/2, gRPC and supports application protocols such as MongoDB and Redis. Istio uses the Envoy proxy to manage all inbound/outbound traffic in the service mesh.
@@ -259,45 +263,45 @@ image::images/istio-kubernetes-playlist.png[link=https://www.youtube.com/playlis
 
 === Install and Configure
 
-. Enable admission controllers as explained at https://istio.io/docs/setup/kubernetes/quick-start/#aws-w-kops. Rolling update the cluster to enable admission controllers.
-+
-Alternatively, create the cluster without `--yes`, edit the cluster to enable admission controllers, and then update the cluster using `kops update cluster --name cluster.k8s.local --yes`.
-+
-. Install and configure:
+. Download Istio:
 
-	curl -L https://github.com/istio/istio/releases/download/0.8.0/istio-0.8.0-osx.tar.gz | tar xzvf -
-	cd istio-0.8.0
-	export PATH=$PWD/bin:$PATH
-	kubectl apply -f install/kubernetes/istio-demo.yaml
+	curl -L https://git.io/getLatestIstio | sh -
+	cd istio-1.*
+
+. Include `istio-1.*/bin` directory in `PATH`
+. Install Istio on Amazon EKS:
+
+	helm install \
+		--wait \
+		--name istio \
+		--namespace istio-system \
+		install/kubernetes/helm/istio \
+		--set global.configValidation=false \
+		--set sidecarInjectorWebhook.enabled=false
 
 . Verify:
 
 	kubectl get pods -n istio-system
-	NAME                                        READY     STATUS      RESTARTS   AGE
-	grafana-cd99bf478-59qmx                     1/1       Running     0          4m
-	istio-citadel-ff5696f6f-zkpzt               1/1       Running     0          4m
-	istio-cleanup-old-ca-6nmrg                  0/1       Completed   0          4m
-	istio-egressgateway-58d98d898c-bjd4f        1/1       Running     0          4m
-	istio-ingressgateway-6bc7c7c4bc-sc7s6       1/1       Running     0          4m
-	istio-mixer-post-install-g67rd              0/1       Completed   0          4m
-	istio-pilot-6c5c6b586c-nfwt9                2/2       Running     0          4m
-	istio-policy-5c7fbb4b9f-f2xtn               2/2       Running     0          4m
-	istio-sidecar-injector-dbd67c88d-j8882      1/1       Running     0          4m
-	istio-statsd-prom-bridge-6dbb7dcc7f-ms846   1/1       Running     0          4m
-	istio-telemetry-54b5bf4847-nlqjx            2/2       Running     0          4m
-	istio-tracing-67dbb5b89f-9zd5j              1/1       Running     0          4m
-	prometheus-586d95b8d9-mz9bm                 1/1       Running     0          4m
-	servicegraph-6d86dfc6cb-tbwwt               1/1       Running     0          4m
+	NAME                                        READY     STATUS    RESTARTS   AGE
+	istio-citadel-84fb7985bf-phr65              1/1       Running   0          2m
+	istio-egressgateway-bd9fb967d-4k6wj         1/1       Running   0          2m
+	istio-galley-655c4f9ccd-9k9mb               1/1       Running   0          2m
+	istio-ingressgateway-688865c5f7-lc7hz       1/1       Running   0          2m
+	istio-pilot-6cd69dc444-cvswb                2/2       Running   0          2m
+	istio-policy-6b9f4697d-vdkwf                2/2       Running   0          2m
+	istio-statsd-prom-bridge-7f44bb5ddb-qvtdh   1/1       Running   0          2m
+	istio-telemetry-6b5579595f-k9krz            2/2       Running   0          2m
+	prometheus-84bd4b9796-ll4zs                 1/1       Running   0          2m
 
-. Deploy pod with sidecar:
+. From the repo's main directory, deploy pod with sidecar:
 
 	kubectl apply -f <(istioctl kube-inject -f manifests/app.yaml)
 
-. Check pods and note that it has two containers (one for application and one for sidecar):
+. Check pods and note that it has two containers (one for the application and one for the sidecar):
 
 	kubectl get pods
-	NAME                        READY     STATUS    RESTARTS   AGE
-	greeting-5ff78ddc8b-pbb4z   2/2       Running   0          1m
+	NAME                       READY     STATUS    RESTARTS   AGE
+	greeting-d4f55c7ff-6gz8b   2/2       Running   0          5s
 
 . Get list of containers in the pod:
 
@@ -305,9 +309,11 @@ Alternatively, create the cluster without `--yes`, edit the cluster to enable ad
 	greeting istio-proxy
 
 . Get response:
-
-  curl http://$(kubectl get svc/greeting-service \
++
+  curl http://$(kubectl get svc/greeting \
   	-o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
++
+It takes about three minutes for the ELB to be ready to receive requests.
 
 === Traffic Shifting
 
