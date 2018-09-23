@@ -155,7 +155,7 @@ This application will be deployed to an https://aws.amazon.com/eks/[Amazon EKS c
 +
 	curl -o heptio-authenticator-aws https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/darwin/amd64/aws-iam-authenticator
 +
-This workaround is required until https://github.com/weaveworks/eksctl/issues/169 is fixed. Include the directory where the CLI is downloaded to your `PATH`.
+This workaround to rename the tool is required until https://github.com/weaveworks/eksctl/issues/169 is fixed. Include the directory where the CLI is downloaded to your `PATH`.
 +
 . Create EKS cluster:
 
@@ -196,7 +196,7 @@ This workaround is required until https://github.com/weaveworks/eksctl/issues/16
 	*         arun@myeks.us-east-1.eksctl.io     myeks.us-east-1.eksctl.io     arun@myeks.us-east-1.eksctl.io     
 	          docker-for-desktop                 docker-for-desktop-cluster    docker-for-desktop   
 +
-As indicated by the `*`, kubectl CLI configuration is updated to the recently created cluster.
+As indicated by `*`, kubectl CLI configuration is updated to the recently created cluster.
 
 == Migrate from Dev to Prod
 
