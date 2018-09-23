@@ -257,6 +257,8 @@ https://istio.io/[Istio] is is a layer 4/7 proxy that routes and load balances t
 
 Istio has a wide variety of traffic management features that live outside the application code, such as A/B testing, phased/canary rollouts, failure recovery, circuit breaker, layer 7 routing and policy enforcement (all provided by the Envoy proxy). Istio also supports ACLs, rate limits, quotas, authentication, request tracing and telemetry collection using its Mixer component. The goal of the Istio project is to support traffic management and security of microservices without requiring any changes to the application; it does this by injecting a sidecar into your pod that handles all network communications.
 
+More details at https://aws.amazon.com/blogs/opensource/getting-started-istio-eks/[Getting Started with Istio on Amazon EKS].
+
 === Install and Configure
 
 . Download Istio:
@@ -318,11 +320,18 @@ It takes about three minutes for the ELB to be ready to receive requests.
   kubectl delete -f manifests/app.yaml
   kubectl apply -f <(istioctl kube-inject -f manifests/app-hello-howdy.yaml)
 
+. Check the list of pods:
+
+	kubectl get pods
+	NAME                              READY     STATUS    RESTARTS   AGE
+	greeting-hello-69cc7684d-7g4bx    2/2       Running   0          1m
+	greeting-howdy-788b5d4b44-g7pml   2/2       Running   0          1m
+
 . Access application multipe times to see different response:
 
   for i in {1..10}
   do
-  	curl -q http://$(kubectl get svc/greeting-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
+  	curl -q http://$(kubectl get svc/greeting -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
   	echo
   done
   
