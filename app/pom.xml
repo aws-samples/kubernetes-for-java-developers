@@ -8,7 +8,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.wildfly.swarm>2018.2.0</version.wildfly.swarm>
+        <version.thorntail>2.2.0.Final</version.thorntail>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
         <docker.repo>arungupta</docker.repo>
@@ -23,9 +23,9 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.wildfly.swarm</groupId>
+                <groupId>io.thorntail</groupId>
                 <artifactId>bom-all</artifactId>
-                <version>${version.wildfly.swarm}</version>
+                <version>${version.thorntail}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -34,7 +34,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.wildfly.swarm</groupId>
+            <groupId>io.thorntail</groupId>
             <artifactId>jaxrs</artifactId>
         </dependency>
     </dependencies>
@@ -48,9 +48,9 @@
                 <version>3.2.2</version>
             </plugin>
             <plugin>
-                <groupId>org.wildfly.swarm</groupId>
-                <artifactId>wildfly-swarm-plugin</artifactId>
-                <version>${version.wildfly.swarm}</version>
+                <groupId>io.thorntail</groupId>
+                <artifactId>thorntail-maven-plugin</artifactId>
+                <version>${version.thorntail}</version>
                 <configuration>
                     <properties>
                         <java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
