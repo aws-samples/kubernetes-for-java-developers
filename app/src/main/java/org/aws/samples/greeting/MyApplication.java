@@ -1,9 +1,9 @@
-package org.aws.samples.skaffold.app;
+package org.aws.samples.greeting;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-import static org.aws.samples.skaffold.app.MyApplication.APP_ROOT;
+import static org.aws.samples.greeting.MyApplication.APP_ROOT;
 
 /**
  * @author arungupta

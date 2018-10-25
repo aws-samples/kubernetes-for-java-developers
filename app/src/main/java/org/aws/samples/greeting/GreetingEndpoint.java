@@ -1,4 +1,4 @@
-package org.aws.samples.skaffold.app;
+package org.aws.samples.greeting;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
