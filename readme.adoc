@@ -248,7 +248,7 @@ It shows the port `8080` and `5005` are published and an Elastic Load Balancer i
 . Access the application:
 
 	curl http://$(kubectl get svc/myapp-greeting \
-		-o jsonpath='{.status.loadBalancer.ingress[0].hostname}'):8080/resources/greeting
+		-o jsonpath='{.status.loadBalancer.ingress[0].hostname}'):8080/hello
 
 . Delete the application:
 
@@ -300,9 +300,13 @@ More details at https://aws.amazon.com/blogs/opensource/getting-started-istio-ek
 +
 Check that both Tracing and Grafana add-ons are enabled.
 +
+. Enable side car injection for all pods in `default` namespace
+
+	kubectl label namespace default istio-injection=enabled
+
 . From the repo's main directory, deploy pod with sidecar:
 
-	kubectl apply -f <(istioctl kube-inject -f manifests/app.yaml)
+	kubectl apply -f manifests/app.yaml
 
 . Check pods and note that it has two containers (one for the application and one for the sidecar):
 
@@ -316,18 +320,16 @@ Check that both Tracing and Grafana add-ons are enabled.
 	greeting istio-proxy
 
 . Get response:
-+
+
   curl http://$(kubectl get svc/greeting \
-  	-o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
-+
-It takes about three minutes for the ELB to be ready to receive requests.
+  	-o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/hello
 
 === Traffic Shifting
 
 . Deploy application with two versions of `greeting`, one that returns `Hello` and another that returns `Howdy`:
 
   kubectl delete -f manifests/app.yaml
-  kubectl apply -f <(istioctl kube-inject -f manifests/app-hello-howdy.yaml)
+  kubectl apply -f manifests/app-hello-howdy.yaml
 
 . Check the list of pods:
 
@@ -340,7 +342,7 @@ It takes about three minutes for the ELB to be ready to receive requests.
 
   for i in {1..10}
   do
-  	curl -q http://$(kubectl get svc/greeting -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
+  	curl -q http://$(kubectl get svc/greeting -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/hello
   	echo
   done
   
