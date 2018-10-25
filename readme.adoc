@@ -39,7 +39,7 @@ Explain multi-stage Dockerfile.
 
 . Access application:
 
-	curl http://localhost:8080/resources/greeting
+	curl http://localhost:8080/hello
 
 . Remove container:
 
@@ -53,7 +53,6 @@ Kubernetes can be easily enabled on a development machine using Docker for Mac a
 . Show the list of contexts:
 
     kubectl config get-contexts
-
 
 . Configure kubectl CLI for Kubernetes cluster
 
@@ -93,7 +92,7 @@ If Helm has already been initialized on the cluster, then you may have to upgrad
 . Access the application:
 
   	curl http://$(kubectl get svc/myapp-greeting \
-  		-o jsonpath='{.status.loadBalancer.ingress[0].hostname}'):8080/resources/greeting
+  		-o jsonpath='{.status.loadBalancer.ingress[0].hostname}'):8080/hello
 
 == Debug Docker and Kubernetes using IntelliJ
 
@@ -124,7 +123,7 @@ image::images/docker-debug2.png[]
 . Access the application:
 
 	curl http://$(kubectl get svc/myapp-greeting \
-		-o jsonpath='{.status.loadBalancer.ingress[0].hostname}'):8080/resources/greeting
+		-o jsonpath='{.status.loadBalancer.ingress[0].hostname}'):8080/hello
 
 . Show the breakpoint hit in IntelliJ:
 +
