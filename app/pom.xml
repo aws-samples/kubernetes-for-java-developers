@@ -13,7 +13,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <docker.repo>arungupta</docker.repo>
         <docker.tag>latest</docker.tag>
-        <docker.name>${docker.repo}/${project.build.finalName}:${docker.tag}</docker.name>
+        <docker.registry>registry.hub.docker.com</docker.registry>
+        <docker.name>${docker.registry}}/${docker.repo}/${project.build.finalName}:${docker.tag}</docker.name>
         <greeting.host>localhost</greeting.host>
         <greeting.port>8080</greeting.port>
         <greeting.path>/resources/greeting</greeting.path>
@@ -66,6 +67,47 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>jib</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.google.cloud.tools</groupId>
+                        <artifactId>jib-maven-plugin</artifactId>
+                        <version>0.9.11</version>
+                        <configuration>
+                            <from>
+                                <image>openjdk:8-jre</image>
+                            </from>
+                            <to>
+                                <image>${docker.name}</image>
+                            </to>
+                            <container>
+                                <environment>
+                                    <_JAVA_OPTIONS>'-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'</_JAVA_OPTIONS>
+                                    <swarm.http.port>8080</swarm.http.port>
+                                </environment>
+                                <ports>
+                                    <port>8080</port>
+                                    <port>5005</port>
+                                </ports>
+                            </container>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
 
