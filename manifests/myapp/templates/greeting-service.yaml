@@ -11,8 +11,10 @@ spec:
   ports:
   - name: http
     protocol: TCP
-    port: 8080
+    port: {{ .Values.service.externalPort }}
+    targetPort: {{ .Values.service.internalPort }}
   - name: debug
     protocol: TCP
-    port: 5005
+    port: {{ .Values.service.externalDebugPort }}
+    targetPort: {{ .Values.service.internalDebugPort }}
   type: LoadBalancer

@@ -14,10 +14,10 @@ spec:
     spec:
       containers:
       - name: greeting
-        image: {{ .Values.greeting.image }}:{{ .Values.docker.tag }}
-        imagePullPolicy: Always
+        image: {{ .Values.greeting.image }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
         ports:
-        - containerPort: 8081
+        - containerPort: {{ .Values.service.internalPort }}
           name: "http"
-        - containerPort: 5005
+        - containerPort: {{ .Values.service.internalDebugPort }}
           name: "debug"
