@@ -166,42 +166,41 @@ This workaround to rename the tool is required until https://github.com/weavewor
 +
 . Create EKS cluster:
 
-	eksctl create cluster --name myeks --nodes 4 --region us-east-1
-	2018-09-22T22:12:22-07:00 [ℹ]  setting availability zones to [us-east-1f us-east-1d us-east-1c]
-	2018-09-22T22:12:23-07:00 [ℹ]  using "ami-0b2ae3c6bda8b5c06" for nodes
-	2018-09-22T22:12:23-07:00 [ℹ]  creating EKS cluster "myeks" in "us-east-1" region
-	2018-09-22T22:12:23-07:00 [ℹ]  will create 2 separate CloudFormation stacks for cluster itself and the initial nodegroup
-	2018-09-22T22:12:23-07:00 [ℹ]  if you encounter any issues, check CloudFormation console or try 'eksctl utils describe-stacks --region=us-east-1 --name=myeks'
-	2018-09-22T22:12:23-07:00 [ℹ]  creating cluster stack "eksctl-myeks-cluster"
-	2018-09-22T22:23:12-07:00 [ℹ]  creating nodegroup stack "eksctl-myeks-nodegroup-0"
-	2018-09-22T22:26:46-07:00 [✔]  all EKS cluster resource for "myeks" had been created
-	2018-09-22T22:26:46-07:00 [✔]  saved kubeconfig as "/Users/argu/.kube/config"
-	2018-09-22T22:26:50-07:00 [ℹ]  the cluster has 0 nodes
-	2018-09-22T22:26:50-07:00 [ℹ]  waiting for at least 4 nodes to become ready
-	2018-09-22T22:27:21-07:00 [ℹ]  the cluster has 4 nodes
-	2018-09-22T22:27:21-07:00 [ℹ]  node "ip-192-168-140-209.ec2.internal" is ready
-	2018-09-22T22:27:21-07:00 [ℹ]  node "ip-192-168-144-7.ec2.internal" is ready
-	2018-09-22T22:27:21-07:00 [ℹ]  node "ip-192-168-225-70.ec2.internal" is ready
-	2018-09-22T22:27:21-07:00 [ℹ]  node "ip-192-168-81-149.ec2.internal" is ready
-	2018-09-22T22:27:21-07:00 [ℹ]  kubectl command should work with "/Users/argu/.kube/config", try 'kubectl get nodes'
-	2018-09-22T22:27:21-07:00 [✔]  EKS cluster "myeks" in "us-east-1" region is ready
+	eksctl create cluster --name myeks --nodes 4 --region us-west-2
+	2018-10-25T13:45:38+02:00 [ℹ]  setting availability zones to [us-west-2a us-west-2c us-west-2b]
+	2018-10-25T13:45:39+02:00 [ℹ]  using "ami-0a54c984b9f908c81" for nodes
+	2018-10-25T13:45:39+02:00 [ℹ]  creating EKS cluster "myeks" in "us-west-2" region
+	2018-10-25T13:45:39+02:00 [ℹ]  will create 2 separate CloudFormation stacks for cluster itself and the initial nodegroup
+	2018-10-25T13:45:39+02:00 [ℹ]  if you encounter any issues, check CloudFormation console or try 'eksctl utils describe-stacks --region=us-west-2 --name=myeks'
+	2018-10-25T13:45:39+02:00 [ℹ]  creating cluster stack "eksctl-myeks-cluster"
+	2018-10-25T13:57:33+02:00 [ℹ]  creating nodegroup stack "eksctl-myeks-nodegroup-0"
+	2018-10-25T14:01:18+02:00 [✔]  all EKS cluster resource for "myeks" had been created
+	2018-10-25T14:01:18+02:00 [✔]  saved kubeconfig as "/Users/argu/.kube/config"
+	2018-10-25T14:01:19+02:00 [ℹ]  the cluster has 0 nodes
+	2018-10-25T14:01:19+02:00 [ℹ]  waiting for at least 4 nodes to become ready
+	2018-10-25T14:01:50+02:00 [ℹ]  the cluster has 4 nodes
+	2018-10-25T14:01:50+02:00 [ℹ]  node "ip-192-168-161-180.us-west-2.compute.internal" is ready
+	2018-10-25T14:01:50+02:00 [ℹ]  node "ip-192-168-214-48.us-west-2.compute.internal" is ready
+	2018-10-25T14:01:50+02:00 [ℹ]  node "ip-192-168-75-44.us-west-2.compute.internal" is ready
+	2018-10-25T14:01:50+02:00 [ℹ]  node "ip-192-168-82-236.us-west-2.compute.internal" is ready
+	2018-10-25T14:01:52+02:00 [ℹ]  kubectl command should work with "/Users/argu/.kube/config", try 'kubectl get nodes'
+	2018-10-25T14:01:52+02:00 [✔]  EKS cluster "myeks" in "us-west-2" region is ready
 
 . Check the nodes:
 
 	kubectl get nodes
-	NAME                              STATUS    ROLES     AGE       VERSION
-	ip-192-168-140-209.ec2.internal   Ready     <none>    1m        v1.10.3
-	ip-192-168-144-7.ec2.internal     Ready     <none>    1m        v1.10.3
-	ip-192-168-225-70.ec2.internal    Ready     <none>    1m        v1.10.3
-	ip-192-168-81-149.ec2.internal    Ready     <none>    1m        v1.10.3
+	NAME                                            STATUS   ROLES    AGE   VERSION
+	ip-192-168-161-180.us-west-2.compute.internal   Ready    <none>   52s   v1.10.3
+	ip-192-168-214-48.us-west-2.compute.internal    Ready    <none>   57s   v1.10.3
+	ip-192-168-75-44.us-west-2.compute.internal     Ready    <none>   57s   v1.10.3
+	ip-192-168-82-236.us-west-2.compute.internal    Ready    <none>   54s   v1.10.3
 
 . Get the list of configs:
 +
 	kubectl config get-contexts
-	CURRENT   NAME                               CLUSTER                       AUTHINFO                           NAMESPACE
-	          arun@eks-gpu.us-west-2.eksctl.io   eks-gpu.us-west-2.eksctl.io   arun@eks-gpu.us-west-2.eksctl.io   
-	*         arun@myeks.us-east-1.eksctl.io     myeks.us-east-1.eksctl.io     arun@myeks.us-east-1.eksctl.io     
-	          docker-for-desktop                 docker-for-desktop-cluster    docker-for-desktop   
+	CURRENT   NAME                             CLUSTER                      AUTHINFO                         NAMESPACE
+	*         arun@myeks.us-west-2.eksctl.io   myeks.us-west-2.eksctl.io    arun@myeks.us-west-2.eksctl.io   
+	          docker-for-desktop               docker-for-desktop-cluster   docker-for-desktop               
 +
 As indicated by `*`, kubectl CLI configuration is updated to the recently created cluster.
 
@@ -209,7 +208,7 @@ As indicated by `*`, kubectl CLI configuration is updated to the recently create
 
 . Explicitly set the context:
 
-    kubectl config use-context arun@myeks.us-east-1.eksctl.io
+    kubectl config use-context arun@myeks.us-west-2.eksctl.io
 
 . Install Helm:
 
@@ -220,17 +219,17 @@ As indicated by `*`, kubectl CLI configuration is updated to the recently create
 . Check the list of pods:
 
 	kubectl get pods -n kube-system
-	NAME                            READY     STATUS    RESTARTS   AGE
-	aws-node-7vs5w                  1/1       Running   0          6m
-	aws-node-8t4sb                  1/1       Running   1          6m
-	aws-node-d9jxv                  1/1       Running   1          6m
-	aws-node-sdfbd                  1/1       Running   0          6m
-	kube-dns-64b69465b4-z9rcq       3/3       Running   0          12m
-	kube-proxy-2gr82                1/1       Running   0          6m
-	kube-proxy-bn28f                1/1       Running   0          6m
-	kube-proxy-ng4xh                1/1       Running   0          6m
-	kube-proxy-rjj8x                1/1       Running   0          6m
-	tiller-deploy-895d57dd9-7z4xb   1/1       Running   0          21s
+	NAME                            READY   STATUS    RESTARTS   AGE
+	aws-node-774jf                  1/1     Running   1          2m
+	aws-node-jrf5r                  1/1     Running   0          2m
+	aws-node-n46tw                  1/1     Running   0          2m
+	aws-node-slgns                  1/1     Running   0          2m
+	kube-dns-7cc87d595-5tskv        3/3     Running   0          8m
+	kube-proxy-2ghg6                1/1     Running   0          2m
+	kube-proxy-hqxwg                1/1     Running   0          2m
+	kube-proxy-lrwrr                1/1     Running   0          2m
+	kube-proxy-x77tq                1/1     Running   0          2m
+	tiller-deploy-895d57dd9-txqk4   1/1     Running   0          15s
 
 . Redeploy the application:
 
@@ -277,26 +276,25 @@ More details at https://aws.amazon.com/blogs/opensource/getting-started-istio-ek
 		--name istio \
 		--namespace istio-system \
 		install/kubernetes/helm/istio \
-		--set global.configValidation=false \
-		--set sidecarInjectorWebhook.enabled=false \
 		--set tracing.enabled=true \
 		--set grafana.enabled=true
 
 . Verify:
 +
 	kubectl get pods -n istio-system
-	NAME                                        READY     STATUS    RESTARTS   AGE
-	grafana-75485f89b9-n4skw                    1/1       Running   0          1m
-	istio-citadel-84fb7985bf-bv2tm              1/1       Running   0          1m
-	istio-egressgateway-bd9fb967d-qls6z         1/1       Running   0          1m
-	istio-galley-655c4f9ccd-nblsb               1/1       Running   0          1m
-	istio-ingressgateway-688865c5f7-xmm46       1/1       Running   0          1m
-	istio-pilot-6cd69dc444-5j8kv                2/2       Running   0          1m
-	istio-policy-6b9f4697d-fpr9g                2/2       Running   0          1m
-	istio-statsd-prom-bridge-7f44bb5ddb-rlt77   1/1       Running   0          1m
-	istio-telemetry-6b5579595f-f7bd7            2/2       Running   0          1m
-	istio-tracing-ff94688bb-47zlc               1/1       Running   0          1m
-	prometheus-84bd4b9796-lrkkv                 1/1       Running   0          1m
+	NAME                                        READY   STATUS    RESTARTS   AGE
+	grafana-75485f89b9-4lwg5                    1/1     Running   0          1m
+	istio-citadel-84fb7985bf-4dkcx              1/1     Running   0          1m
+	istio-egressgateway-bd9fb967d-bsrhz         1/1     Running   0          1m
+	istio-galley-655c4f9ccd-qwk42               1/1     Running   0          1m
+	istio-ingressgateway-688865c5f7-zj9db       1/1     Running   0          1m
+	istio-pilot-6cd69dc444-9qstf                2/2     Running   0          1m
+	istio-policy-6b9f4697d-g8hc6                2/2     Running   0          1m
+	istio-sidecar-injector-8975849b4-cnd6l      1/1     Running   0          1m
+	istio-statsd-prom-bridge-7f44bb5ddb-8r2zx   1/1     Running   0          1m
+	istio-telemetry-6b5579595f-nlst8            2/2     Running   0          1m
+	istio-tracing-ff94688bb-2w4wg               1/1     Running   0          1m
+	prometheus-84bd4b9796-t9kk5                 1/1     Running   0          1m
 +
 Check that both Tracing and Grafana add-ons are enabled.
 +
@@ -304,13 +302,13 @@ Check that both Tracing and Grafana add-ons are enabled.
 
 	kubectl label namespace default istio-injection=enabled
 
-. From the repo's main directory, deploy pod with sidecar:
+. From the repo's main directory, deploy the application:
 
 	kubectl apply -f manifests/app.yaml
 
 . Check pods and note that it has two containers (one for the application and one for the sidecar):
 
-	kubectl get pods
+	kubectl get pods -l app=greeting
 	NAME                       READY     STATUS    RESTARTS   AGE
 	greeting-d4f55c7ff-6gz8b   2/2       Running   0          5s
 
@@ -333,7 +331,7 @@ Check that both Tracing and Grafana add-ons are enabled.
 
 . Check the list of pods:
 
-	kubectl get pods
+	kubectl get pods -l app=greeting
 	NAME                              READY     STATUS    RESTARTS   AGE
 	greeting-hello-69cc7684d-7g4bx    2/2       Running   0          1m
 	greeting-howdy-788b5d4b44-g7pml   2/2       Running   0          1m
@@ -348,7 +346,7 @@ Check that both Tracing and Grafana add-ons are enabled.
   
 . Setup an Istio rule to split traffic between 75% to `Hello` and 25% to `Howdy` version of the `greeting` service:
 
-  kubectl apply -f manifests/greeting-rule-75-25.yaml
+  kubectl apply -f manifests/app-rule-75-25.yaml
 
 . Invoke the service again to see the traffic split between two services.
 
@@ -356,14 +354,14 @@ Check that both Tracing and Grafana add-ons are enabled.
 
 . Setup an Istio rule to divert 10% traffic to canary:
 
-  kubectl delete -f manifests/greeting-rule-75-25.yaml
-  kubectl apply -f manifests/greeting-canary.yaml
+  kubectl delete -f manifests/app-rule-75-25.yaml
+  kubectl apply -f manifests/app-canary.yaml
 
 . Access application multipe times to see ~10% greeting messages with `Howdy`:
 
   for i in {1..50}
   do
-  	curl -q http://$(kubectl get svc/greeting-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
+  	curl -q http://$(kubectl get svc/greeting -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/hello
   	echo
   done
 
@@ -377,12 +375,12 @@ Setup access to the tracing dashboard URL using port-forwarding:
 
 	kubectl port-forward \
 		-n istio-system \
-		$(kubectl get pod \
+		pod/$(kubectl get pod \
 			-n istio-system \
 			-l app=jaeger \
 			-o jsonpath='{.items[0].metadata.name}') 16686:16686 &
 
-Access the dashboard at http://localhost:16686.
+Access the dashboard at http://localhost:16686, click on `Dependencies`, `DAG`.
 
 image::images/istio-dag.png[]
 
@@ -405,12 +403,12 @@ image::images/istio-dag.png[]
 			get pod -l app=grafana \
 			-o jsonpath='{.items[0].metadata.name}') 3000:3000 &
 
-. View Istio dashboard http://localhost:3000/d/1/istio-dashboard?
+. View Istio dashboard http://localhost:3000. Click on `Home`, `Istio Workload Dashboard`.
 
 . Invoke the endpoint:
 
 	curl http://$(kubectl get svc/greeting \
-		-o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/resources/greeting
+		-o jsonpath='{.status.loadBalancer.ingress[0].hostname}')/hello
 
 image::images/istio-dashboard.png[]
 
@@ -421,7 +419,7 @@ Delays and timeouts can be injected in services.
 . Deploy the application:
 
    kubectl delete -f manifests/app.yaml
-   kubectl apply -f <(istioctl kube-inject -f manifests/app-ingress.yaml)
+   kubectl apply -f manifests/app-ingress.yaml
 
 . Add a 5 seconds delay to calls to the service:
 
