@@ -45,7 +45,7 @@ Explain multi-stage Dockerfile.
 
 	docker container rm -f greeting
 
-== Custom JRE for Spring Boot Application
+== Minimal Docker Image using Custom JRE
 
 . Download and `scp` JDK 11 to an Amazon Linux instance
 . Install JDK 11:
