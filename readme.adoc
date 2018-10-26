@@ -45,6 +45,40 @@ Explain multi-stage Dockerfile.
 
 	docker container rm -f greeting
 
+== Custom JRE for Spring Boot Application
+
+. Download and `scp` JDK 11 to an Amazon Linux instance
+. Install JDK 11:
+
+	sudo yum install jdk-11.0.1_linux-x64_bin.rpm
+
+. Create a custom JRE for the Spring Boot application:
+
+	jlink \
+		--output myjre \
+		--add-modules $(jdeps --print-module-deps target/app.jar),\
+		java.xml,jdk.unsupported,java.sql,java.naming,java.desktop,\
+		java.management,java.security.jgss,java.instrument
+
+. Build Docker image using this custom JRE:
+
+	docker image build --file Dockerfile.jre -t arungupta/greeting:jre .
+
+. List the Docker images and show the difference in sizes:
+
+	[ec2-user@ip-172-31-21-7 app]$ docker image ls | grep greeting
+	arungupta/greeting   jre                 c685bad6dd11        12 minutes ago      207MB
+	arungupta/greeting   latest              1b7c061dad60        9 hours ago         490MB
+
+. Run the container:
+
+	docker container run -d -p 8080:8080 arungupta/greeting:jre
+
+. Access the application:
+
+	curl http://localhost:8080/hello
+
+
 == Build and Test using Kubernetes
 
 Kubernetes can be easily enabled on a development machine using Docker for Mac as explained at https://docs.docker.com/docker-for-mac/#kubernetes.
