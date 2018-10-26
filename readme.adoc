@@ -47,13 +47,14 @@ Explain multi-stage Dockerfile.
 
 == Minimal Docker Image using Custom JRE
 
-. Download and `scp` JDK 11 to an Amazon Linux instance
+. Download http://download.oracle.com/otn-pub/java/jdk/11.0.1+13/90cf5d8f270a4347a95050320eef3fb7/jdk-11.0.1_linux-x64_bin.rpm[JDK 11] and `scp` to an https://aws.amazon.com/marketplace/pp/B00635Y2IW/ref=mkt_ste_ec2_lw_os_win[Amazon Linux] instance
 . Install JDK 11:
 
 	sudo yum install jdk-11.0.1_linux-x64_bin.rpm
 
 . Create a custom JRE for the Spring Boot application:
 
+	cp target/app.war target/app.jar
 	jlink \
 		--output myjre \
 		--add-modules $(jdeps --print-module-deps target/app.jar),\
@@ -77,7 +78,6 @@ Explain multi-stage Dockerfile.
 . Access the application:
 
 	curl http://localhost:8080/hello
-
 
 == Build and Test using Kubernetes
 
