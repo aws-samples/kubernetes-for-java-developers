@@ -63,17 +63,17 @@ Explain multi-stage Dockerfile.
 
 . Build Docker image using this custom JRE:
 
-	docker image build --file Dockerfile.jre -t arungupta/greeting:jre .
+	docker image build --file Dockerfile.jre -t arungupta/greeting:jre-slim .
 
 . List the Docker images and show the difference in sizes:
 
 	[ec2-user@ip-172-31-21-7 app]$ docker image ls | grep greeting
-	arungupta/greeting   jre                 c685bad6dd11        12 minutes ago      207MB
-	arungupta/greeting   latest              1b7c061dad60        9 hours ago         490MB
+	arungupta/greeting   jre-slim            9eed25582f36        6 seconds ago       162MB
+	arungupta/greeting   latest              1b7c061dad60        10 hours ago        490MB
 
 . Run the container:
 
-	docker container run -d -p 8080:8080 arungupta/greeting:jre
+	docker container run -d -p 8080:8080 arungupta/greeting:jre-slim
 
 . Access the application:
 
