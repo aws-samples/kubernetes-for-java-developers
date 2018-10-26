@@ -1,4 +1,4 @@
-FROM debian:9
+FROM debian:9-slim
 
 COPY target/app.war /root
 COPY myjre /root/myjre
