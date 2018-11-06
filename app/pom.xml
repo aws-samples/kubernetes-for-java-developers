@@ -19,7 +19,7 @@
         <docker.repo>arungupta</docker.repo>
         <docker.tag>latest</docker.tag>
         <docker.registry>registry.hub.docker.com</docker.registry>
-        <docker.name>${docker.registry}}/${docker.repo}/${project.build.finalName}:${docker.tag}</docker.name>
+        <docker.name>${docker.registry}/${docker.repo}/${project.build.finalName}:${docker.tag}</docker.name>
         <greeting.host>localhost</greeting.host>
         <greeting.port>8080</greeting.port>
     </properties>
