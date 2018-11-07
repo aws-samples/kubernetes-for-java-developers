@@ -22,17 +22,34 @@ The source code is in the `app` directory.
 
 == Build and Test using Docker
 
+=== Build Docker Image using multi-stage Dockerfile
+
 . Create `m2.tar.gz`:
 
 	mvn -Dmaven.repo.local=./m2 clean package
 	tar cvf m2.tar.gz ./m2
 
 . Create Docker image:
-+
+
 	docker image build -t arungupta/greeting .
 +
 Explain multi-stage Dockerfile.
-+
+
+=== Build Docker Image using https://github.com/GoogleContainerTools/jib[Jib]
+
+. Create Docker image:
+
+    mvn compile jib:build -Pjib
+
+The benefits of using Jib over a multi-stage Dockerfile build include:
+
+* Don't need to install Docker or run a Docker daemon
+* Don't need to write a Dockerfile or build the archive of m2 dependencies
+* Much faster
+* Builds reproducibly
+
+=== Test built container using Docker
+
 . Run container:
 
 	docker container run --name greeting -p 8080:8080 -d arungupta/greeting
