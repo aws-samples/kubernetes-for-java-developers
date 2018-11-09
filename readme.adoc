@@ -48,7 +48,7 @@ The benefits of using Jib over a multi-stage Dockerfile build include:
 * Much faster
 * Builds reproducibly
 
-The above builds directly to your Docker registry. Alternatively, Jib can also build to a Docker daemon instead:
+The above builds directly to your Docker registry. Alternatively, Jib can also build to a Docker daemon:
 
     mvn compile jib:dockerBuild -Pjib
 
