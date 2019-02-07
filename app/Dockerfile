@@ -3,7 +3,7 @@ FROM maven:3.5-jdk-8 as BUILD
 ADD m2.tar.gz /root
 
 COPY . /usr/src/app
-RUN mvn --batch-mode -f /usr/src/app/pom.xml clean package
+RUN mvn -Dmaven.repo.local=/root/m2 --batch-mode -f /usr/src/app/pom.xml clean package
 
 FROM openjdk:8-jre
 EXPOSE 8080 5005
