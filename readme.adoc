@@ -207,18 +207,14 @@ This was tested using Docker for Mac.
 
 == Kubernetes Cluster on AWS
 
-This application will be deployed to an https://aws.amazon.com/eks/[Amazon EKS cluster]. Let's create the cluster first.
+This application will be deployed to an https://aws.amazon.com/eks/[Amazon EKS] cluster. If you're looking for a self-paced workshop that provide detailed instructions to get you started with EKS then https://eksworkshop.com[eksworkshop.com] is your place.
+
+Let's create the cluster first.
 
 . Install http://eksctl.io/[eksctl] CLI:
 
 	brew install weaveworks/tap/eksctl
 
-. Download AWS IAM Authenticator:
-+
-	curl -o heptio-authenticator-aws https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/darwin/amd64/aws-iam-authenticator
-+
-This workaround to rename the tool is required until https://github.com/weaveworks/eksctl/issues/169 is fixed. Include the directory where the CLI is downloaded to your `PATH`.
-+
 . Create EKS cluster:
 
 	eksctl create cluster --name myeks --nodes 4 --region us-west-2
@@ -307,6 +303,62 @@ It shows the port `8080` and `5005` are published and an Elastic Load Balancer i
 . Delete the application:
 
 	helm delete --purge myapp
+
+== AWS App Mesh
+
+https://https://aws.amazon.com/app-mesh/[AWS App Mesh] is a service mesh that provides application-level networking to make it easy for your services to communicate with each other across multiple types of compute infrastructure. App Mesh can be used with Amazon EKS or Kubernetes running on AWS. In addition, it also works with other container services offered by AWS such as AWS Fargate and Amazon ECS. It also works with microservices deployed on Amazon EC2.
+
+A thorough detailed example that shows how to use App Mesh with EKS is available at https://eksworkshop.com/servicemesh_with_appmesh/[Service Mesh with App Mesh]. This section provides a simplistic setup using the configuration files from there.
+
+All scripts used in this section are in the `manifests/appmesh/scripts` directory.
+
+. Find IAM role for the EKS worker nodes:
+
+	aws iam list-roles \
+		--query \
+		'Roles[?contains(RoleName,`eksctl-myeks-nodegroup`)].RoleName' --output text
+
+. Setup permissions for the worker nodes:
+
+	aws iam attach-role-policy \
+		--role-name $ROLE_NAME \
+		--policy-arn arn:aws:iam::aws:policy/AWSAppMeshFullAccess
+
+. Enable side-car injection by running `create.sh` script from https://github.com/aws/aws-app-mesh-examples/tree/master/examples/apps/djapp/2_create_injector. You need to change `ca-bundle.sh` and change `MESH_NAME` to `greeting-app`.
+. Label prod namespace:
+
+	kubectl label namespace prod appmesh.k8s.aws/sidecarInjectorWebhook=enabled
+
+. Create CRDs:
+
+	kubectl create -f https://raw.githubusercontent.com/aws/aws-app-mesh-examples/master/examples/apps/djapp/3_add_crds/mesh-definition.yaml
+	kubectl create -f https://raw.githubusercontent.com/aws/aws-app-mesh-examples/master/examples/apps/djapp/3_add_crds/virtual-node-definition.yaml
+	kubectl create -f https://raw.githubusercontent.com/aws/aws-app-mesh-examples/master/examples/apps/djapp/3_add_crds/virtual-service-definition.yaml
+	kubectl create -f https://raw.githubusercontent.com/aws/aws-app-mesh-examples/master/examples/apps/djapp/3_add_crds/controller-deployment.yaml
+
+. Create a Mesh:
+
+	kubectl create -f mesh.yaml
+
+. Create Virtual Nodes:
+
+	kubectl create -f virtualnodes.yaml
+
+. Create a Virtual Services:
+
+	kubectl create -f virtualservice.yaml
+
+. Create services:
+
+	kubectl create -f app-hello-howdy.yaml
+
+. Invoke the service:
+
+	for i in {1..50}
+	do
+	  curl -q http://$(kubectl get svc/greeting -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'):8080/hello
+	  echo
+	done
 
 == Istio
 
