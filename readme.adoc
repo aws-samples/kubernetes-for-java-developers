@@ -310,49 +310,47 @@ https://https://aws.amazon.com/app-mesh/[AWS App Mesh] is a service mesh that pr
 
 A thorough detailed example that shows how to use App Mesh with EKS is available at https://eksworkshop.com/servicemesh_with_appmesh/[Service Mesh with App Mesh]. This section provides a simplistic setup using the configuration files from there.
 
+All scripts used in this section are in the `manifests/appmesh/scripts` directory.
+
 . Find IAM role for the EKS worker nodes:
 
 	aws iam list-roles \
 		--query \
-		'Roles[?contains(RoleName,`eksctl-myeks-cluster`)].RoleName' --output text
+		'Roles[?contains(RoleName,`eksctl-myeks-nodegroup`)].RoleName' --output text
 
 . Setup permissions for the worker nodes:
-+
-	aws iam put-role-policy \
+
+	aws iam attach-role-policy \
 		--role-name $ROLE_NAME \
 		--policy-arn arn:aws:iam::aws:policy/AWSAppMeshFullAccess
-+
-Verify that the policy is attached:
-+
-	aws iam list-attached-role-policies --role-name $ROLE_NAME
-+
+
+. Enable side-car injection by running `create.sh` script from https://github.com/aws/aws-app-mesh-examples/tree/master/examples/apps/djapp/2_create_injector
+. Label prod namespace:
+
+	kubectl label namespace prod appmesh.k8s.aws/sidecarInjectorWebhook=enabled
+
+. Create CRDs:
+
+	kubectl create -f https://raw.githubusercontent.com/aws/aws-app-mesh-examples/master/examples/apps/djapp/3_add_crds/mesh-definition.yaml
+	kubectl create -f https://raw.githubusercontent.com/aws/aws-app-mesh-examples/master/examples/apps/djapp/3_add_crds/virtual-node-definition.yaml
+	kubectl create -f https://raw.githubusercontent.com/aws/aws-app-mesh-examples/master/examples/apps/djapp/3_add_crds/virtual-service-definition.yaml
+	kubectl create -f https://raw.githubusercontent.com/aws/aws-app-mesh-examples/master/examples/apps/djapp/3_add_crds/controller-deployment.yaml
+
 . Create a Mesh:
 
-	aws appmesh create-mesh --mesh-name greeting-mesh
+	kubectl create -f mesh.yaml
 
-. Create a Virtual Node:
+. Create Virtual Nodes:
 
-	aws appmesh create-virtual-node \
-		--mesh-name greeting-mesh \
-		--virtual-node-name greeting-node \
-		--spec "{
-		"
+	kubectl create -f virtualnodes.yaml
 
-. Create a Virtual Router:
+. Create a Virtual Services:
 
-. Create a Virtual Service:
+	kubectl create -f virtualservice.yaml
 
-	aws appmesh create-virtual-service \
-		--mesh-name greeting-mesh \
-		--virtual-service-name greeting-vsvc
+. Create services:
 
-. Create a Virtual Node:
-
-
-
-
-
-. Install App Mesh CRDs: 
+	kubectl create -f app-hello-howdy.yaml
 
 == Istio
 
