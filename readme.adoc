@@ -304,6 +304,28 @@ It shows the port `8080` and `5005` are published and an Elastic Load Balancer i
 
 	helm delete --purge myapp
 
+== AWS App Mesh
+
+https://https://aws.amazon.com/app-mesh/[AWS App Mesh] is a service mesh that provides application-level networking to make it easy for your services to communicate with each other across multiple types of compute infrastructure. App Mesh can be used with Amazon EKS or Kubernetes running on AWS. In addition, it also works with other container services offered by AWS such as AWS Fargate and Amazon ECS. It also works with microservices deployed on Amazon EC2.
+
+. Find IAM role for the EKS worker nodes:
+
+	aws iam list-roles \
+		--query \
+		'Roles[?contains(RoleName,`eksctl-myeks-cluster`)].RoleName' --output text
+
+. Setup permissions for the worker nodes:
++
+	aws iam put-role-policy \
+		--role-name $ROLE_NAME \
+		--policy-arn arn:aws:iam::aws:policy/AWSAppMeshFullAccess
++
+Verify that the policy is attached:
++
+	aws iam list-attached-role-policies --role-name $ROLE_NAME
++
+.  
+
 == Istio
 
 https://istio.io/[Istio] is is a layer 4/7 proxy that routes and load balances traffic over HTTP, WebSocket, HTTP/2, gRPC and supports application protocols such as MongoDB and Redis. Istio uses the Envoy proxy to manage all inbound/outbound traffic in the service mesh.
