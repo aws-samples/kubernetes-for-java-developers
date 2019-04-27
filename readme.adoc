@@ -207,7 +207,9 @@ This was tested using Docker for Mac.
 
 == Kubernetes Cluster on AWS
 
-This application will be deployed to an https://aws.amazon.com/eks/[Amazon EKS cluster]. Let's create the cluster first.
+This application will be deployed to an https://aws.amazon.com/eks/[Amazon EKS] cluster. If you're looking for a self-paced workshop that provide detailed instructions to get you started with EKS then https://eksworkshop.com[eksworkshop.com] is your place.
+
+Let's create the cluster first.
 
 . Install http://eksctl.io/[eksctl] CLI:
 
