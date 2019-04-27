@@ -352,6 +352,14 @@ All scripts used in this section are in the `manifests/appmesh/scripts` director
 
 	kubectl create -f app-hello-howdy.yaml
 
+. Invoke the service:
+
+	for i in {1..50}
+	do
+	  curl -q http://$(kubectl get svc/greeting -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'):8080/hello
+	  echo
+	done
+
 == Istio
 
 https://istio.io/[Istio] is is a layer 4/7 proxy that routes and load balances traffic over HTTP, WebSocket, HTTP/2, gRPC and supports application protocols such as MongoDB and Redis. Istio uses the Envoy proxy to manage all inbound/outbound traffic in the service mesh.
