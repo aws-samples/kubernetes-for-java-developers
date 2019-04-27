@@ -324,7 +324,7 @@ All scripts used in this section are in the `manifests/appmesh/scripts` director
 		--role-name $ROLE_NAME \
 		--policy-arn arn:aws:iam::aws:policy/AWSAppMeshFullAccess
 
-. Enable side-car injection by running `create.sh` script from https://github.com/aws/aws-app-mesh-examples/tree/master/examples/apps/djapp/2_create_injector
+. Enable side-car injection by running `create.sh` script from https://github.com/aws/aws-app-mesh-examples/tree/master/examples/apps/djapp/2_create_injector. You need to change `ca-bundle.sh` and change `MESH_NAME` to `greeting-app`.
 . Label prod namespace:
 
 	kubectl label namespace prod appmesh.k8s.aws/sidecarInjectorWebhook=enabled
