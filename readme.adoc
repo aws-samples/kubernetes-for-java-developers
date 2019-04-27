@@ -312,6 +312,8 @@ A thorough detailed example that shows how to use App Mesh with EKS is available
 
 All scripts used in this section are in the `manifests/appmesh/scripts` directory.
 
+=== Setup IAM Permissions
+
 . Find IAM role for the EKS worker nodes:
 
 	aws iam list-roles \
@@ -324,6 +326,8 @@ All scripts used in this section are in the `manifests/appmesh/scripts` director
 		--role-name $ROLE_NAME \
 		--policy-arn arn:aws:iam::aws:policy/AWSAppMeshFullAccess
 
+=== Configure App Mesh
+
 . Enable side-car injection by running `create.sh` script from https://github.com/aws/aws-app-mesh-examples/tree/master/examples/apps/djapp/2_create_injector. You need to change `ca-bundle.sh` and change `MESH_NAME` to `greeting-app`.
 . Label prod namespace:
 
@@ -335,6 +339,8 @@ All scripts used in this section are in the `manifests/appmesh/scripts` director
 	kubectl create -f https://raw.githubusercontent.com/aws/aws-app-mesh-examples/master/examples/apps/djapp/3_add_crds/virtual-node-definition.yaml
 	kubectl create -f https://raw.githubusercontent.com/aws/aws-app-mesh-examples/master/examples/apps/djapp/3_add_crds/virtual-service-definition.yaml
 	kubectl create -f https://raw.githubusercontent.com/aws/aws-app-mesh-examples/master/examples/apps/djapp/3_add_crds/controller-deployment.yaml
+
+=== Create App Mesh Components
 
 . Create a Mesh:
 
@@ -351,6 +357,8 @@ All scripts used in this section are in the `manifests/appmesh/scripts` director
 . Create services:
 
 	kubectl create -f app-hello-howdy.yaml
+
+=== Traffic Shifting
 
 . Invoke the service:
 
