@@ -215,12 +215,6 @@ Let's create the cluster first.
 
 	brew install weaveworks/tap/eksctl
 
-. Download AWS IAM Authenticator:
-+
-	curl -o heptio-authenticator-aws https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/darwin/amd64/aws-iam-authenticator
-+
-This workaround to rename the tool is required until https://github.com/weaveworks/eksctl/issues/169 is fixed. Include the directory where the CLI is downloaded to your `PATH`.
-+
 . Create EKS cluster:
 
 	eksctl create cluster --name myeks --nodes 4 --region us-west-2
