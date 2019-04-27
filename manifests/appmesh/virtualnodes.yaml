@@ -1,0 +1,49 @@
+apiVersion: appmesh.k8s.aws/v1beta1
+kind: VirtualNode
+metadata:
+  name: greeting
+  namespace: prod
+spec:
+  meshName: greeting-app
+  listeners:
+    - portMapping:
+        port: 8080
+        protocol: http
+  serviceDiscovery:
+    dns:
+      hostName: greeting.prod.svc.cluster.local
+  backends:
+    - virtualService:
+        virtualServiceName: hello.prod.svc.cluster.local
+    - virtualService:
+        virtualServiceName: howdy.prod.svc.cluster.local
+---
+apiVersion: appmesh.k8s.aws/v1beta1
+kind: VirtualNode
+metadata:
+  name: hello
+  namespace: prod  
+spec:
+  meshName: greeting-app
+  listeners:
+    - portMapping:
+        port: 8080
+        protocol: http
+  serviceDiscovery:
+    dns:
+      hostName: hello.prod.svc.cluster.local
+---
+apiVersion: appmesh.k8s.aws/v1beta1
+kind: VirtualNode
+metadata:
+  name: howdy
+  namespace: prod
+spec:
+  meshName: greeting-app
+  listeners:
+    - portMapping:
+        port: 8080
+        protocol: http
+  serviceDiscovery:
+    dns:
+      hostName: howdy.prod.svc.cluster.local

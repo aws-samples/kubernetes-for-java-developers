@@ -1,0 +1,8 @@
+apiVersion: appmesh.k8s.aws/v1beta1
+kind: Mesh
+metadata:
+  name: greeting-app
+  namespace: prod
+spec:
+  cloudMapNamespaceName: greeting-app
+  serviceDiscoveryType: dns
