@@ -3,6 +3,8 @@
 
 Deploying your Java application in a Kubernetes cluster could feel like Alice in Wonderland. You keep going down the rabbit hole and don't know how to make that ride comfortable. This repository explains how a Java application can be deployed, tested, debugged and monitored in Kubernetes. In addition, it also talks about canary deployment and deployment pipeline.
 
+A comprehensive hands-on course explaining these concepts is available at https://www.linkedin.com/learning/kubernetes-for-java-developers.
+
 == Application
 
 We will use a simple Java application built using Spring Boot. The application publishes a REST endpoint that can be invoked at `http://{host}:{port}/hello`.
