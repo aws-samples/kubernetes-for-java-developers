@@ -52,7 +52,7 @@ The benefits of using Jib over a multi-stage Dockerfile build include:
 
 The above builds directly to your Docker registry. Alternatively, Jib can also build to a Docker daemon:
 
-    mvn compile jib:dockerBuild -Pjib
+    mvn compile jib:dockerBuild -Pjib -Ddocker.name=arungupta/greeting
 
 === Test built container using Docker
 
@@ -306,7 +306,7 @@ It shows the port `8080` and `5005` are published and an Elastic Load Balancer i
 
 	helm delete --purge myapp
 
-== AWS App Mesh
+== Service Mesh using AWS App Mesh
 
 https://https://aws.amazon.com/app-mesh/[AWS App Mesh] is a service mesh that provides application-level networking to make it easy for your services to communicate with each other across multiple types of compute infrastructure. App Mesh can be used with Amazon EKS or Kubernetes running on AWS. In addition, it also works with other container services offered by AWS such as AWS Fargate and Amazon ECS. It also works with microservices deployed on Amazon EC2.
 
@@ -370,7 +370,7 @@ All scripts used in this section are in the `manifests/appmesh/scripts` director
 	  echo
 	done
 
-== Istio
+== Service Mesh using Istio
 
 https://istio.io/[Istio] is is a layer 4/7 proxy that routes and load balances traffic over HTTP, WebSocket, HTTP/2, gRPC and supports application protocols such as MongoDB and Redis. Istio uses the Envoy proxy to manage all inbound/outbound traffic in the service mesh.
 
@@ -569,7 +569,7 @@ https://github.com/asobti/kube-monkey[kube-monkey] is an implementation of Netfl
 
 This application agrees to kill up to 40% of pods. The schedule of deletion is defined by kube-monkey configuration and is defined to be between 10am and 4pm on weekdays.
 
-== Deployment Pipeline
+== Deployment Pipeline using Skaffold
 
 https://github.com/GoogleContainerTools/skaffold[Skaffold] is a command line utility that facilitates continuous development for Kubernetes applications. With Skaffold, you can iterate on your application source code locally then deploy it to a remote Kubernetes cluster.
 
