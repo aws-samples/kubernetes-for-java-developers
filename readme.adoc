@@ -461,7 +461,7 @@ Check that both Tracing and Grafana add-ons are enabled.
   
 . Setup an Istio rule to split traffic between 75% to `Hello` and 25% to `Howdy` version of the `greeting` service:
 
-  kubectl apply -f manifests/app-rule-75-25.yaml
+  kubectl apply -f manifests/istio/app-rule-75-25.yaml
 
 . Invoke the service again to see the traffic split between two services.
 
@@ -469,8 +469,8 @@ Check that both Tracing and Grafana add-ons are enabled.
 
 . Setup an Istio rule to divert 10% traffic to canary:
 
-  kubectl delete -f manifests/app-rule-75-25.yaml
-  kubectl apply -f manifests/app-canary.yaml
+  kubectl delete -f manifests/istio/app-rule-75-25.yaml
+  kubectl apply -f manifests/istio/app-canary.yaml
 
 . Access application multipe times to see ~10% greeting messages with `Howdy`:
 
@@ -538,7 +538,7 @@ Delays and timeouts can be injected in services.
 
 . Add a 5 seconds delay to calls to the service:
 
-    kubectl apply -f manifests/greeting-delay.yaml
+    kubectl apply -f manifests/istio/greeting-delay.yaml
 
 . Invoke the service using a 2 seconds timeout:
 
@@ -555,15 +555,15 @@ https://github.com/asobti/kube-monkey[kube-monkey] is an implementation of Netfl
 
 . Create kube-monkey configuration:
 
-	kubectl apply -f manifests/kube-monkey-configmap.yaml 
+	kubectl apply -f manifests/kubemonkey/kube-monkey-configmap.yaml
 
 . Run kube-monkey:
 
-	kubectl apply -f manifests/kube-monkey-deployment.yaml
+	kubectl apply -f manifests/kubemonkey/kube-monkey-deployment.yaml
 
 . Deploy an app that opts-in for pod deletion:
 
-	kubectl apply -f manifests/app-kube-monkey.yaml
+	kubectl apply -f manifests/kubemonkey/app-kube-monkey.yaml
 
 This application agrees to kill up to 40% of pods. The schedule of deletion is defined by kube-monkey configuration and is defined to be between 10am and 4pm on weekdays.
 
