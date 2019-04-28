@@ -49,10 +49,10 @@
                     <plugin>
                         <groupId>com.google.cloud.tools</groupId>
                         <artifactId>jib-maven-plugin</artifactId>
-                        <version>0.9.13</version>
+                        <version>1.1.2</version>
                         <configuration>
                             <from>
-                                <image>openjdk:8u171-alpine</image>
+                                <image>openjdk:8-jre-slim</image>
                             </from>
                             <to>
                                 <image>${docker.name}</image>
@@ -60,7 +60,6 @@
                             <container>
                                 <environment>
                                     <_JAVA_OPTIONS>'-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'</_JAVA_OPTIONS>
-                                    <swarm.http.port>8080</swarm.http.port>
                                 </environment>
                                 <ports>
                                     <port>8080</port>
