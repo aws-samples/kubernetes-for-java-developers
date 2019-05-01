@@ -598,3 +598,20 @@ https://github.com/GoogleContainerTools/skaffold[Skaffold] is a command line uti
 
 . Refresh the page in browser to see the output.
 
+== Deployment Pipeline using Jenkins X
+
+. Install `jx` CLI:
+
+	brew tap jenkins-x/jx
+	brew install jx 
+
+. Create a new https://github.com/settings/tokens[GitHub token] with the following scope:
++
+image::images/jenkinsx-github-token.png[]
++
+. Install Jenkins X on Amazon EKS:
++
+	jx install --provider=eks --git-username arun-gupta --git-api-token GITHUB_TOKEN --batch-mode 
++
+link:images/jenkinsx-log.txt[Log] shows complete run of the command.
+
