@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         app: greeting
+        greeting: talker
     spec:
       containers:
       - name: greeting
