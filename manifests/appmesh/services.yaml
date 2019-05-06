@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mostly-hello
+  labels:
+    app: hello
+spec:
+  ports:
+  - port: 8080
+    name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mostly-howdy
+  labels:
+    app: howdy
+spec:
+  ports:
+  - port: 8080
+    name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: howdy
+  labels:
+    app: greeting
+spec:
+  ports:
+  - port: 8080
+    name: http
+  selector:
+    greeting: howdy
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello
+  labels:
+    app: greeting
+spec:
+  ports:
+  - port: 8080
+    name: http
+  selector:
+    greeting: hello
+
