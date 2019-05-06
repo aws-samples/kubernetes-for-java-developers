@@ -57,4 +57,4 @@ spec:
   - port: 8080
     name: http
   selector:
-    name: talker
+    greeting: talker
