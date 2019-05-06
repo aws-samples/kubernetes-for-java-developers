@@ -23,7 +23,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: greeting-hello
+  name: hello
   namespace: prod
   labels:
     name: greeting
@@ -45,7 +45,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: greeting-howdy
+  name: howdy
   namespace: prod
   labels:
     name: greeting
