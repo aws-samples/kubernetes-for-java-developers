@@ -1,6 +1,27 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
+  name: talker
+  namespace: prod
+  labels:
+    name: talker
+spec:
+  replicas:
+  template:
+    metadata:
+      labels:
+        app: greeting
+    spec:
+      containers:
+      - name: greeting
+        image: arungupta/greeting:hello
+        ports:
+        - containerPort: 8080
+          name: "http"
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
   name: greeting-hello
   namespace: prod
   labels:
@@ -41,18 +62,3 @@ spec:
         ports:
         - containerPort: 8080
           name: "http"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: greeting
-  namespace: prod
-spec:
-  selector:
-    app: greeting
-  ports:
-  - name: http
-    protocol: TCP
-    port: 8080
-    targetPort: 8080
-  type: LoadBalancer
