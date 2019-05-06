@@ -1,7 +1,7 @@
 apiVersion: appmesh.k8s.aws/v1beta1
 kind: VirtualNode
 metadata:
-  name: greeting
+  name: talker
   namespace: prod
 spec:
   meshName: greeting-app
@@ -11,12 +11,12 @@ spec:
         protocol: http
   serviceDiscovery:
     dns:
-      hostName: greeting.prod.svc.cluster.local
+      hostName: talker.prod.svc.cluster.local
   backends:
     - virtualService:
-        virtualServiceName: hello.prod.svc.cluster.local
+        virtualServiceName: mostly-hello.prod.svc.cluster.local
     - virtualService:
-        virtualServiceName: howdy.prod.svc.cluster.local
+        virtualServiceName: mostly-howdy.prod.svc.cluster.local
 ---
 apiVersion: appmesh.k8s.aws/v1beta1
 kind: VirtualNode
@@ -47,3 +47,34 @@ spec:
   serviceDiscovery:
     dns:
       hostName: howdy.prod.svc.cluster.local
+---
+apiVersion: appmesh.k8s.aws/v1beta1
+kind: VirtualNode
+metadata:
+  name: mostly-howdy
+  namespace: prod
+spec:
+  meshName: greeting-app
+  listeners:
+    - portMapping:
+        port: 8080
+        protocol: http
+  serviceDiscovery:
+    dns:
+      hostName: mostly-howdy.prod.svc.cluster.local
+---
+apiVersion: appmesh.k8s.aws/v1beta1
+kind: VirtualNode
+metadata:
+  name: mostly-hello
+  namespace: prod
+spec:
+  meshName: greeting-app
+  listeners:
+    - portMapping:
+        port: 8080
+        protocol: http
+  serviceDiscovery:
+    dns:
+      hostName: mostly-hello.prod.svc.cluster.local
+
