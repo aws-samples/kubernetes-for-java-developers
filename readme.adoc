@@ -356,19 +356,36 @@ All scripts used in this section are in the `manifests/appmesh/scripts` director
 
 	kubectl create -f virtualservice.yaml
 
-. Create services:
+. Create deployments:
 
 	kubectl create -f app-hello-howdy.yaml
 
+. Create services:
+
+	kubectl create -f services.yaml
+	
 === Traffic Shifting
 
-. Invoke the service:
+. Find the name of the talker pod:
 
-	for i in {1..50}
-	do
-	  curl -q http://$(kubectl get svc/greeting -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'):8080/hello
-	  echo
-	done
+	kubectl get pods -nprod -lgreeting=talker
+
+
+. Exec into the talker pod:
+
+	kubectl exec -nprod <YOUR_TALKER_POD> -it bash
+
+. Invoke the mostly-howdy service to get back mostly howdy:
+
+	while [ 1 ]; do curl http://mostly-howdy.prod.svc.cluster.local:8080/hello; echo;done
+
+. CTRL-C to break the loop.
+
+. Invoke the mostly-hello service to get back mostly hello:
+
+	while [ 1 ]; do curl http://mostly-howdy.prod.svc.cluster.local:8080/hello; echo;done
+
+. CTRL-C to break the loop.
 
 == Service Mesh using Istio
 

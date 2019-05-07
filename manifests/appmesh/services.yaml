@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mostly-hello
+  namespace: prod
   labels:
     app: hello
 spec:
@@ -13,6 +14,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mostly-howdy
+  namespace: prod
   labels:
     app: howdy
 spec:
@@ -24,6 +26,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: howdy
+  namespace: prod
   labels:
     app: greeting
 spec:
@@ -37,6 +40,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: hello
+  namespace: prod
   labels:
     app: greeting
 spec:
@@ -50,6 +54,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: talker
+  namespace: prod
   labels:
     app: greeting
 spec:
