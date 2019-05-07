@@ -1,0 +1,336 @@
+Setting the dev namespace to: jx
+Namespace jx created 
+ 
+Using helmBinary helm with feature flag: none
+Context "arun@myeks.us-west-2.eksctl.io" modified.
+Storing the kubernetes provider eks in the TeamSettings
+Enabling helm template mode in the TeamSettings
+Git configured for user: Arun Gupta and email arun.gupta@gmail.com
+Trying to create ClusterRoleBinding arun-gupta-gmail-com-cluster-admin-binding for role: cluster-admin for user arun.gupta@gmail.com
+ clusterrolebindings.rbac.authorization.k8s.io "arun-gupta-gmail-com-cluster-admin-binding" not found
+Created ClusterRoleBinding arun-gupta-gmail-com-cluster-admin-binding
+Using helm2
+Skipping tiller
+Using helmBinary helm with feature flag: template-mode
+Initialising Helm 'init --client-only'
+helm installed and configured
+Using helm values file: /var/folders/cv/yxmfk09x0ln_pp53287fk775lgvpjt/T/ing-values-292394767
+Current configuration dir: /Users/argu/.jx
+versionRepository: https://github.com/jenkins-x/jenkins-x-versions.git git ref: 
+Deleting and cloning the Jenkins X versions repo
+Cloning the Jenkins X versions repo https://github.com/jenkins-x/jenkins-x-versions.git with ref refs/heads/master to /Users/argu/.jx/jenkins-x-versions
+Enumerating objects: 97, done.
+Counting objects: 100% (97/97), done.
+Compressing objects: 100% (30/30), done.
+Total 1221 (delta 60), reused 93 (delta 60), pack-reused 1124
+using stable version 1.3.1 from charts of stable/nginx-ingress from /Users/argu/.jx/jenkins-x-versions
+Installing using helm binary: helm
+Current configuration dir: /Users/argu/.jx
+versionRepository: https://github.com/jenkins-x/jenkins-x-versions.git git ref: 
+Deleting and cloning the Jenkins X versions repo
+Cloning the Jenkins X versions repo https://github.com/jenkins-x/jenkins-x-versions.git with ref refs/heads/master to /Users/argu/.jx/jenkins-x-versions
+Enumerating objects: 97, done.
+Counting objects: 100% (97/97), done.
+Compressing objects: 100% (30/30), done.
+Total 1221 (delta 60), reused 93 (delta 60), pack-reused 1124
+Fetched chart stable/nginx-ingress to dir /var/folders/cv/yxmfk09x0ln_pp53287fk775lgvpjt/T/helm-template-workdir-610764150/jxing/chartFiles/nginx-ingress
+Generating Chart Template 'template --name jxing --namespace kube-system /var/folders/cv/yxmfk09x0ln_pp53287fk775lgvpjt/T/helm-template-workdir-610764150/jxing/chartFiles/nginx-ingress --output-dir /var/folders/cv/yxmfk09x0ln_pp53287fk775lgvpjt/T/helm-template-workdir-610764150/jxing/output --debug --set rbac.create=true --set controller.extraArgs.publish-service=kube-system/jxing-nginx-ingress-controller --values /var/folders/cv/yxmfk09x0ln_pp53287fk775lgvpjt/T/ing-values-292394767'
+Applying generated chart stable/nginx-ingress YAML via kubectl in dir: /var/folders/cv/yxmfk09x0ln_pp53287fk775lgvpjt/T/helm-template-workdir-610764150/jxing/output
+clusterrole.rbac.authorization.k8s.io/jxing-nginx-ingress created
+clusterrolebinding.rbac.authorization.k8s.io/jxing-nginx-ingress created
+configmap/jxing-nginx-ingress-controller created
+deployment.extensions/jxing-nginx-ingress-controller created
+service/jxing-nginx-ingress-controller created
+deployment.extensions/jxing-nginx-ingress-default-backend created
+service/jxing-nginx-ingress-default-backend created
+role.rbac.authorization.k8s.io/jxing-nginx-ingress created
+rolebinding.rbac.authorization.k8s.io/jxing-nginx-ingress created
+serviceaccount/jxing-nginx-ingress created
+
+Removing Kubernetes resources from older releases using selector: jenkins.io/chart-release=jxing,jenkins.io/version!=1.3.1 from all pvc configmap release sa role rolebinding secret
+Removing Kubernetes resources from older releases using selector: jenkins.io/chart-release=jxing,jenkins.io/version!=1.3.1,jenkins.io/namespace=kube-system from clusterrole clusterrolebinding
+Waiting for external loadbalancer to be created and update the nginx-ingress-controller service in kube-system namespace
+External loadbalancer created
+Waiting to find the external host name of the ingress controller Service in namespace kube-system with name jxing-nginx-ingress-controller
+
+On AWS we recommend using a custom DNS name to access services in your Kubernetes cluster to ensure you can use all of your Availability Zones
+If you do not have a custom DNS name you can use yet, then you can register a new one here: https://console.aws.amazon.com/route53/home?#DomainRegistration:
+
+? Would you like to register a wildcard DNS ALIAS to point at this ELB address?  No
+
+The Ingress address aa5a13f896c4d11e9819c0ab3505777c-c0711574b30062d3.elb.us-west-2.amazonaws.com is not an IP address. We recommend we try resolve it to a public IP address and use that for the domain to access services externally.
+? Would you like wait and resolve this address to an IP address and use it for the domain? Yes
+
+Waiting for aa5a13f896c4d11e9819c0ab3505777c-c0711574b30062d3.elb.us-west-2.amazonaws.com to be resolvable to an IP address...
+aa5a13f896c4d11e9819c0ab3505777c-c0711574b30062d3.elb.us-west-2.amazonaws.com resolved to IP 52.43.206.106
+No domain flag provided so using default 52.43.206.106.nip.io to generate Ingress rules
+nginx ingress controller installed and configured
+Lets set up a Git user name and API token to be able to perform CI/CD
+
+Select the CI/CD pipelines Git server and user
+Setting the pipelines Git server https://github.com and user name arun-gupta.
+Saving the Git authentication configuration
+Current configuration dir: /Users/argu/.jx
+versionRepository: https://github.com/jenkins-x/jenkins-x-versions.git git ref: 
+Deleting and cloning the Jenkins X versions repo
+Cloning the Jenkins X versions repo https://github.com/jenkins-x/jenkins-x-versions.git with ref refs/heads/master to /Users/argu/.jx/jenkins-x-versions
+Enumerating objects: 97, done.
+Counting objects: 100% (97/97), done.
+Compressing objects: 100% (30/30), done.
+Total 1221 (delta 60), reused 93 (delta 60), pack-reused 1124
+Current configuration dir: /Users/argu/.jx
+options.Flags.CloudEnvRepository: https://github.com/jenkins-x/cloud-environments
+options.Flags.LocalCloudEnvironment: false
+Cloning the Jenkins X cloud environments repo to /Users/argu/.jx/cloud-environments
+Current configuration dir: /Users/argu/.jx
+options.Flags.CloudEnvRepository: https://github.com/jenkins-x/cloud-environments
+options.Flags.LocalCloudEnvironment: false
+Cloning the Jenkins X cloud environments repo to /Users/argu/.jx/cloud-environments
+Enumerating objects: 1382, done.
+Total 1382 (delta 0), reused 0 (delta 0), pack-reused 1382
+Setting the dev namespace to: jx
+No default password set, generating a random one
+Generated helm values /Users/argu/.jx/extraValues.yaml
+Creating Secret jx-install-config in namespace jx
+Installing Jenkins X platform helm chart from: /Users/argu/.jx/cloud-environments/env-eks
+Setting the current namespace to: jx
+Installing jx into namespace jx
+using stable version 2.0.177 from charts of jenkins-x/jenkins-x-platform from /Users/argu/.jx/jenkins-x-versions
+Installing jenkins-x-platform version: 2.0.177
+Adding values file /Users/argu/.jx/cloud-environments/env-eks/myvalues.yaml
+Adding values file /Users/argu/.jx/adminSecrets.yaml
+Adding values file /Users/argu/.jx/extraValues.yaml
+Adding values file /Users/argu/.jx/cloud-environments/env-eks/secrets.yaml
+Current configuration dir: /Users/argu/.jx
+versionRepository: https://github.com/jenkins-x/jenkins-x-versions.git git ref: 
+Deleting and cloning the Jenkins X versions repo
+Cloning the Jenkins X versions repo https://github.com/jenkins-x/jenkins-x-versions.git with ref refs/heads/master to /Users/argu/.jx/jenkins-x-versions
+Enumerating objects: 97, done.
+Counting objects: 100% (97/97), done.
+Compressing objects: 100% (30/30), done.
+Total 1221 (delta 60), reused 93 (delta 60), pack-reused 1124
+Fetched chart jenkins-x/jenkins-x-platform to dir /var/folders/cv/yxmfk09x0ln_pp53287fk775lgvpjt/T/helm-template-workdir-610764150/jenkins-x/chartFiles/jenkins-x-platform
+Generating Chart Template 'template --name jenkins-x --namespace jx /var/folders/cv/yxmfk09x0ln_pp53287fk775lgvpjt/T/helm-template-workdir-610764150/jenkins-x/chartFiles/jenkins-x-platform --output-dir /var/folders/cv/yxmfk09x0ln_pp53287fk775lgvpjt/T/helm-template-workdir-610764150/jenkins-x/output --debug --values /Users/argu/.jx/cloud-environments/env-eks/myvalues.yaml --values /Users/argu/.jx/adminSecrets.yaml --values /Users/argu/.jx/extraValues.yaml --values /Users/argu/.jx/cloud-environments/env-eks/secrets.yaml'
+Applying generated chart jenkins-x/jenkins-x-platform YAML via kubectl in dir: /var/folders/cv/yxmfk09x0ln_pp53287fk775lgvpjt/T/helm-template-workdir-610764150/jenkins-x/output
+deployment.extensions/jenkins-x-chartmuseum created
+persistentvolumeclaim/jenkins-x-chartmuseum created
+secret/jenkins-x-chartmuseum created
+service/jenkins-x-chartmuseum created
+role.rbac.authorization.k8s.io/cleanup created
+rolebinding.rbac.authorization.k8s.io/cleanup created
+serviceaccount/cleanup created
+clusterrole.rbac.authorization.k8s.io/controllerrole-jx created
+clusterrolebinding.rbac.authorization.k8s.io/controllerrole-jx created
+deployment.apps/jenkins-x-controllerrole created
+role.rbac.authorization.k8s.io/controllerrole created
+rolebinding.rbac.authorization.k8s.io/controllerrole created
+serviceaccount/jenkins-x-controllerrole created
+clusterrole.rbac.authorization.k8s.io/controllerteam-jx created
+clusterrolebinding.rbac.authorization.k8s.io/controllerteam-jx created
+deployment.apps/jenkins-x-controllerteam created
+role.rbac.authorization.k8s.io/controllerteam created
+rolebinding.rbac.authorization.k8s.io/controllerteam created
+serviceaccount/jenkins-x-controllerteam created
+clusterrole.rbac.authorization.k8s.io/controllerworkflow-jx created
+clusterrolebinding.rbac.authorization.k8s.io/controllerworkflow-jx created
+deployment.apps/jenkins-x-controllerworkflow created
+role.rbac.authorization.k8s.io/controllerworkflow created
+rolebinding.rbac.authorization.k8s.io/controllerworkflow created
+serviceaccount/jenkins-x-controllerworkflow created
+configmap/exposecontroller created
+role.rbac.authorization.k8s.io/expose created
+rolebinding.rbac.authorization.k8s.io/expose created
+serviceaccount/expose created
+clusterrole.rbac.authorization.k8s.io/gcactivities-jx created
+clusterrolebinding.rbac.authorization.k8s.io/gcactivities-jx created
+cronjob.batch/jenkins-x-gcactivities created
+role.rbac.authorization.k8s.io/gcactivities created
+rolebinding.rbac.authorization.k8s.io/gcactivities created
+serviceaccount/jenkins-x-gcactivities created
+cronjob.batch/jenkins-x-gcpods created
+role.rbac.authorization.k8s.io/gcpods created
+rolebinding.rbac.authorization.k8s.io/gcpods created
+serviceaccount/jenkins-x-gcpods created
+clusterrole.rbac.authorization.k8s.io/gcpreviews-jx created
+clusterrolebinding.rbac.authorization.k8s.io/gcpreviews-jx created
+cronjob.batch/jenkins-x-gcpreviews created
+role.rbac.authorization.k8s.io/gcpreviews created
+rolebinding.rbac.authorization.k8s.io/gcpreviews created
+serviceaccount/jenkins-x-gcpreviews created
+deployment.extensions/jenkins-x-heapster created
+clusterrolebinding.rbac.authorization.k8s.io/jenkins-x-heapster created
+role.rbac.authorization.k8s.io/jenkins-x-heapster-pod-nanny created
+rolebinding.rbac.authorization.k8s.io/jenkins-x-heapster-pod-nanny created
+service/heapster created
+serviceaccount/jenkins-x-heapster created
+configmap/jenkins created
+persistentvolumeclaim/jenkins created
+service/jenkins-agent created
+deployment.extensions/jenkins created
+service/jenkins created
+configmap/jenkins-x-git-kinds created
+configmap/jenkins-pod-xml-dlang created
+configmap/jenkins-pod-xml-go created
+configmap/jenkins-pod-xml-python created
+configmap/jenkins-pod-xml-newman created
+configmap/jenkins-pod-xml-terraform created
+configmap/jenkins-pod-xml-maven created
+configmap/jenkins-pod-xml-rust created
+configmap/jenkins-pod-xml-python2 created
+configmap/jenkins-pod-xml-nodejs created
+configmap/jenkins-pod-xml-aws-cdk created
+configmap/jenkins-pod-xml-gradle created
+configmap/jenkins-pod-xml-maven-java11 created
+configmap/jenkins-pod-xml-scala created
+configmap/jenkins-pod-xml-python37 created
+configmap/jenkins-pod-xml-promote created
+configmap/jenkins-pod-xml-maven-nodejs created
+configmap/jenkins-pod-xml-swift created
+configmap/jenkins-pod-xml-jx-base created
+configmap/jenkins-pod-xml-ruby created
+clusterrolebinding.rbac.authorization.k8s.io/jenkins-jx-role-binding created
+secret/jenkins created
+serviceaccount/jenkins created
+configmap/jenkins-tests created
+deployment.extensions/jenkins-x-mongodb created
+persistentvolumeclaim/jenkins-x-mongodb created
+secret/jenkins-x-mongodb created
+service/jenkins-x-mongodb created
+configmap/jenkins-x-monocular-api-config created
+deployment.extensions/jenkins-x-monocular-api created
+service/jenkins-x-monocular-api created
+deployment.extensions/jenkins-x-monocular-prerender created
+service/jenkins-x-monocular-prerender created
+configmap/jenkins-x-monocular-ui-config created
+deployment.extensions/jenkins-x-monocular-ui created
+service/jenkins-x-monocular-ui created
+configmap/jenkins-x-monocular-ui-vhost created
+configmap/nexus created
+deployment.extensions/jenkins-x-nexus created
+persistentvolumeclaim/jenkins-x-nexus created
+secret/nexus created
+service/nexus created
+role.rbac.authorization.k8s.io/committer created
+clusterrolebinding.rbac.authorization.k8s.io/jenkins-x-team-controller created
+configmap/jenkins-x-team-controller created
+secret/jenkins-docker-cfg created
+configmap/jenkins-x-devpod-config created
+configmap/jenkins-x-docker-registry created
+configmap/jenkins-x-extensions created
+secret/jx-basic-auth created
+role.rbac.authorization.k8s.io/jx-view created
+secret/jenkins-maven-settings created
+secret/jenkins-npm-token created
+role.rbac.authorization.k8s.io/owner created
+configmap/jenkins-x-pod-template-dlang created
+configmap/jenkins-x-pod-template-go created
+configmap/jenkins-x-pod-template-python created
+configmap/jenkins-x-pod-template-newman created
+configmap/jenkins-x-pod-template-terraform created
+configmap/jenkins-x-pod-template-maven created
+configmap/jenkins-x-pod-template-rust created
+configmap/jenkins-x-pod-template-python2 created
+configmap/jenkins-x-pod-template-nodejs created
+configmap/jenkins-x-pod-template-aws-cdk created
+configmap/jenkins-x-pod-template-gradle created
+configmap/jenkins-x-pod-template-maven-java11 created
+configmap/jenkins-x-pod-template-scala created
+configmap/jenkins-x-pod-template-python37 created
+configmap/jenkins-x-pod-template-promote created
+configmap/jenkins-x-pod-template-maven-nodejs created
+configmap/jenkins-x-pod-template-swift created
+configmap/jenkins-x-pod-template-jx-base created
+configmap/jenkins-x-pod-template-ruby created
+secret/jenkins-release-gpg created
+secret/jenkins-ssh-config created
+role.rbac.authorization.k8s.io/viewer created
+
+Applying Helm hook post-upgrade YAML via kubectl in file: /var/folders/cv/yxmfk09x0ln_pp53287fk775lgvpjt/T/helm-template-workdir-610764150/jenkins-x/helmHooks/jenkins-x-platform/charts/expose/templates/job.yaml
+job.batch/expose created
+
+Waiting for helm post-upgrade hook Job expose to complete before removing it
+Deleting helm hook sources from file: /var/folders/cv/yxmfk09x0ln_pp53287fk775lgvpjt/T/helm-template-workdir-610764150/jenkins-x/helmHooks/jenkins-x-platform/charts/expose/templates/job.yaml
+job.batch "expose" deleted
+Removing Kubernetes resources from older releases using selector: jenkins.io/chart-release=jenkins-x,jenkins.io/version!=2.0.177 from all pvc configmap release sa role rolebinding secret
+Removing Kubernetes resources from older releases using selector: jenkins.io/chart-release=jenkins-x,jenkins.io/version!=2.0.177,jenkins.io/namespace=jx from clusterrole clusterrolebinding
+WARNING: waiting for install to be ready, if this is the first time then it will take a while to download images
+Jenkins X deployments ready in namespace jx
+Configuring the TeamSettings for ImportMode Jenkinsfile
+
+
+	********************************************************
+
+	     NOTE: Your admin password is: 1lw5tgW7dyyePr,bMw_8
+
+	********************************************************
+
+	
+Configure Jenkins API Token
+waiting up to 0s for the Jenkins server to be healty at URL http://jenkins.jx.52.43.206.106.nip.io/login
+Generating the API token...
+Logged in admin to Jenkins server at http://jenkins.jx.52.43.206.106.nip.io via legacy security realm
+Enable CSRF protection at: http://jenkins.jx.52.43.206.106.nip.io/configureSecurity/
+Created user admin API Token for Jenkins server jenkins.jx.52.43.206.106.nip.io at http://jenkins.jx.52.43.206.106.nip.io
+Updating Jenkins with new external URL details http://jenkins.jx.52.43.206.106.nip.io
+Creating default staging and production environments
+Using arun-gupta environment git owner in batch mode.
+Using Git provider GitHub at https://github.com
+
+
+About to create repository environment-hawkstar-staging on server https://github.com with user arun-gupta
+
+
+Creating repository arun-gupta/environment-hawkstar-staging
+Creating Git repository arun-gupta/environment-hawkstar-staging
+Pushed Git repository to https://github.com/arun-gupta/environment-hawkstar-staging
+
+Creating staging Environment in namespace jx
+Created environment staging
+Namespace jx-staging created 
+ 
+Created Jenkins Project: http://jenkins.jx.52.43.206.106.nip.io/job/arun-gupta/job/environment-hawkstar-staging/
+
+Note that your first pipeline may take a few minutes to start while the necessary images get downloaded!
+
+
+Creating GitHub webhook for arun-gupta/environment-hawkstar-staging for url http://jenkins.jx.52.43.206.106.nip.io/github-webhook/
+Using Git provider GitHub at https://github.com
+
+
+About to create repository environment-hawkstar-production on server https://github.com with user arun-gupta
+
+
+Creating repository arun-gupta/environment-hawkstar-production
+Creating Git repository arun-gupta/environment-hawkstar-production
+Pushed Git repository to https://github.com/arun-gupta/environment-hawkstar-production
+
+Creating production Environment in namespace jx
+Created environment production
+Namespace jx-production created 
+ 
+Created Jenkins Project: http://jenkins.jx.52.43.206.106.nip.io/job/arun-gupta/job/environment-hawkstar-production/
+
+Note that your first pipeline may take a few minutes to start while the necessary images get downloaded!
+
+
+Creating GitHub webhook for arun-gupta/environment-hawkstar-production for url http://jenkins.jx.52.43.206.106.nip.io/github-webhook/
+
+Jenkins X installation completed successfully
+
+
+	********************************************************
+
+	     NOTE: Your admin password is: PASSWORD
+
+	********************************************************
+
+	
+
+Your Kubernetes context is now set to the namespace: jx 
+To switch back to your original namespace use: jx namespace default
+Or to use this context/namespace in just one terminal use: jx shell
+For help on switching contexts see: https://jenkins-x.io/developing/kube-context/
+
+To import existing projects into Jenkins:       jx import
+To create a new Spring Boot microservice:       jx create spring -d web -d actuator
+To create a new microservice from a quickstart: jx create quickstart
