@@ -312,15 +312,15 @@ https://https://aws.amazon.com/app-mesh/[AWS App Mesh] is a service mesh that pr
 
 A thorough detailed example that shows how to use App Mesh with EKS is available at https://eksworkshop.com/servicemesh_with_appmesh/[Service Mesh with App Mesh]. This section provides a simplistic setup using the configuration files from there.
 
-All scripts used in this section are in the `manifests/appmesh/scripts` directory.
+All scripts used in this section are in the `manifests/appmesh` directory.
 
 === Setup IAM Permissions
 
-. Find IAM role for the EKS worker nodes:
+. Set a variable `ROLE_NAME` to IAM role for the EKS worker nodes:
 
-	aws iam list-roles \
+	ROLE_NAME=$(aws iam list-roles \
 		--query \
-		'Roles[?contains(RoleName,`eksctl-myeks-nodegroup`)].RoleName' --output text
+		'Roles[?contains(RoleName,`eksctl-myeks-nodegroup`)].RoleName' --output text)
 
 . Setup permissions for the worker nodes:
 
@@ -331,6 +331,10 @@ All scripts used in this section are in the `manifests/appmesh/scripts` director
 === Configure App Mesh
 
 . Enable side-car injection by running `create.sh` script from https://github.com/aws/aws-app-mesh-examples/tree/master/examples/apps/djapp/2_create_injector. You need to change `ca-bundle.sh` and change `MESH_NAME` to `greeting-app`.
+. Create `prod` namespace:
+
+	kubectl create namespace prod
+
 . Label prod namespace:
 
 	kubectl label namespace prod appmesh.k8s.aws/sidecarInjectorWebhook=enabled
@@ -368,24 +372,25 @@ All scripts used in this section are in the `manifests/appmesh/scripts` director
 
 . Find the name of the talker pod:
 
-	kubectl get pods -nprod -lgreeting=talker
-
+	TALKER_POD=$(kubectl get pods \
+		-nprod -lgreeting=talker \
+		-o jsonpath='{.items[0].metadata.name}')
 
 . Exec into the talker pod:
 
-	kubectl exec -nprod <YOUR_TALKER_POD> -it bash
+	kubectl exec -nprod $TALKER_POD -it bash
 
-. Invoke the mostly-howdy service to get back mostly howdy:
+. Invoke the mostly-hello service to get back mostly `Hello` response:
+
+	while [ 1 ]; do curl http://mostly-hello.prod.svc.cluster.local:8080/hello; echo;done
+
+. `CTRL`+`C` to break the loop.
+
+. Invoke the mostly-howdy service to get back mostly `Howdy` response:
 
 	while [ 1 ]; do curl http://mostly-howdy.prod.svc.cluster.local:8080/hello; echo;done
 
-. CTRL-C to break the loop.
-
-. Invoke the mostly-hello service to get back mostly hello:
-
-	while [ 1 ]; do curl http://mostly-howdy.prod.svc.cluster.local:8080/hello; echo;done
-
-. CTRL-C to break the loop.
+. `CTRL`+`C` to break the loop.
 
 == Service Mesh using Istio
 
