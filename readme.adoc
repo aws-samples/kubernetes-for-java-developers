@@ -680,4 +680,6 @@ image::images/jenkinsx-github-token.png[]
 	jx install --provider=eks --git-username arun-gupta --git-api-token GITHUB_TOKEN --batch-mode 
 +
 link:images/jenkinsx-log.txt[Log] shows complete run of the command.
++
+. Use `jx import` to import a project. Need `Dockerfile` and maven application in the root directory.
 
