@@ -654,6 +654,14 @@ Click on `Create stack` to create the resources.
 === View CodePipeline
 
 . Once the stack creation is complete, open https://us-west-2.console.aws.amazon.com/codesuite/codepipeline/pipelines?region=us-west-2#[CodePipeline in the AWS Console].
+. Select the pipeline and wait for the pipeline status to complete:
++
+image::images/codepipeline-status.png[]
++
+. Access the service:
+
+	curl http://$(kubectl get svc/greeting -n default \
+		-o jsonpath='{.status.loadBalancer.ingress[0].hostname}'):8080/hello
 
 
 == Deployment Pipeline using Jenkins X
