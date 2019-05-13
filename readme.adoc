@@ -624,6 +624,8 @@ https://github.com/GoogleContainerTools/skaffold[Skaffold] is a command line uti
 
 Complete detailed instructions are available at https://eksworkshop.com/codepipeline/.
 
+=== Create IAM role
+
 . Create an IAM role and add an in-line policy that will allow the CodeBuild stage to interact with the EKS cluster:
 
 	ACCOUNT_ID=`aws sts get-caller-identity --query Account --output text`
@@ -638,13 +640,20 @@ Complete detailed instructions are available at https://eksworkshop.com/codepipe
 	kubectl get -n kube-system configmap/aws-auth -o yaml | awk "/mapRoles: \|/{print;print \"$ROLE\";next}1" > /tmp/aws-auth-patch.yml
 	kubectl patch configmap/aws-auth -n kube-system --patch "$(cat /tmp/aws-auth-patch.yml)"
 
+=== Create CloudFormation template
+
 . Fork the repo https://github.com/aws-samples/kubernetes-for-java-developers
 . Create a new GitHub token https://github.com/settings/tokens/new, select `repo` as the scope, click on `Generate Token` to generate the token. Copy the generated token.
-. Launch https://console.aws.amazon.com/cloudformation/home?#/stacks/create/review?stackName=eksws-codepipeline&templateURL=https://s3.amazonaws.com/eksworkshop.com/templates/master/ci-cd-codepipeline.cfn.yml[CodePipeline CloudFormation template]
-. Specify the correct values for `GitHubUser`, `GitHubToken`, `GitSourceRepo` and `EKS cluster name`. Change the branch if you need to
+. Launch https://console.aws.amazon.com/cloudformation/home?#/stacks/create/review?stackName=eksws-codepipeline&templateURL=https://s3.amazonaws.com/eksworkshop.com/templates/master/ci-cd-codepipeline.cfn.yml[CodePipeline CloudFormation template].
+. Specify the correct values for `GitHubUser`, `GitHubToken`, `GitSourceRepo` and `EKS cluster name`. Change the branch if you need to:
 +
 image::images/codepipeline-template.png[]
 +
+Click on `Create stack` to create the resources.
+
+=== View CodePipeline
+
+. Once the stack creation is complete, open https://us-west-2.console.aws.amazon.com/codesuite/codepipeline/pipelines?region=us-west-2#[CodePipeline in the AWS Console].
 
 
 == Deployment Pipeline using Jenkins X
