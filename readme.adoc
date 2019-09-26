@@ -104,7 +104,7 @@ The above builds directly to your Docker registry. Alternatively, Jib can also b
 
 == Build and Test using Kubernetes
 
-A single node Kubernetes cluster can be easily created on a development machine using https://github.com/kubernetes/minikube[Minikube], https://microk8s.io/[MicroK8s], https://github.com/kubernetes-sigs/kind[KIND], and https://docs.docker.com/docker-for-mac/kubernetes/[Docker for Mac].
+A single node Kubernetes cluster can be easily created on a development machine using https://github.com/kubernetes/minikube[Minikube], https://microk8s.io/[MicroK8s], https://github.com/kubernetes-sigs/kind[KIND], and https://docs.docker.com/docker-for-mac/kubernetes/[Docker for Mac]. https://blog.tilt.dev//2019/08/21/why-does-developing-on-kubernetes-suck.html[Read] on why using these local development environments does not truly represent your prod cluster.
 
 This tutorial will use Docker for Mac.
 
