@@ -104,7 +104,9 @@ The above builds directly to your Docker registry. Alternatively, Jib can also b
 
 == Build and Test using Kubernetes
 
-Kubernetes can be easily enabled on a development machine using Docker for Mac as explained at https://docs.docker.com/docker-for-mac/#kubernetes.
+Kubernetes can be easily enabled on a development machine using https://github.com/kubernetes/minikube[Minikube], https://microk8s.io/[MicroK8s], https://github.com/kubernetes-sigs/kind[KIND], and https://docs.docker.com/docker-for-mac/kubernetes/[Docker for Mac].
+
+This tutorial will use Docker for Mac.
 
 . Ensure that Kubernetes is enabled in Docker for Mac
 . Show the list of contexts:
