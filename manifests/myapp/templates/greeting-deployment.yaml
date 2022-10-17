@@ -7,6 +7,9 @@ metadata:
     {{- template "labels" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-greeting
   template:
     metadata:
       labels:
