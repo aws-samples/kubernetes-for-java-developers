@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: greeting
-        image: arungupta/greeting
+        image: poseidon1979/kubernetes-java:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
