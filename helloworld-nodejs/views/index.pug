@@ -1,0 +1,13 @@
+html
+  head
+    title= title
+    link(rel="stylesheet", href="/" + context + "/css/hello.css")
+  body
+    header
+        img(src="https://avatars.githubusercontent.com/u/47866591?s=400&u=ec2bf5ddb34b9be51be77cb67170fe2ac8d35802&v=4" width="50px")
+        .headerText CloudBees CI Pipeline Workshop
+    section.helloworld
+      h1#message= message
+      h2 from #{name}
+    footer.info
+        p Build Number: #{buildNumber}  Commit: #{shortCommit}
