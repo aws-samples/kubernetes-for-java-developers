@@ -1,5 +1,5 @@
 greeting:
-  image: poseidon1979/kubernetes-java:latest
+  image: poseidon1979/kubernetes-java
   replicaCount: 1
 
 image:
