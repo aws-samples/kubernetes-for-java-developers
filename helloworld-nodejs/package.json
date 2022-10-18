@@ -1,0 +1,23 @@
+{
+  "name": "helloworld-nodejs",
+  "version": "1.0.0",
+  "description": "Simple hello world sample in Node",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node hello.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cloudbees-cd-acceleration-workshop/helloworld-nodejs.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/knative/serving/issues"
+  },
+  "homepage": "https://github.com/knative/serving#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
