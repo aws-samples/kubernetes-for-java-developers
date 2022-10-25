@@ -1,0 +1,71 @@
+pipeline {
+  agent {
+     node { 
+        label 'docker-in-docker'
+        } 
+  }
+  stages {
+    stage('Checkout Scm') {
+      steps {
+        git(credentialsId: 'paul-github', url: 'https://github.com/cloudbees-pyang/kubernetes-for-java-developers.git')
+      }
+    }
+
+    stage('Shell script 0') {
+      steps {
+        sh 'ls -l /usr/local/bin'
+      }
+    }
+
+    stage('No Converter-0') {
+      steps {
+        echo 'No converter for Builder: hudson.plugins.jira.JiraVersionCreatorBuilder'
+      }
+    }
+
+    stage('Shell script 1') {
+      steps {
+        sh '''cd app
+chmod a+x ./mvnw
+./mvnw package'''
+      }
+    }
+
+    stage('No Converter-1') {
+      steps {
+        echo 'No converter for Builder: io.snyk.jenkins.SnykStepBuilder'
+      }
+    }
+
+    stage('No Converter-2') {
+      steps {
+        echo 'No converter for Builder: sp.sd.nexusartifactuploader.NexusArtifactUploader'
+      }
+    }
+
+    stage('Shell script 2') {
+      steps {
+        sh '''cd app
+./mvnw -Dmaven.repo.local=./m2 clean package
+tar cvf m2.tar.gz ./m2'''
+      }
+    }
+
+    stage('No Converter-3') {
+      steps {
+        echo 'No converter for Builder: com.cloudbees.dockerpublish.DockerBuilder'
+      }
+    }
+
+    stage('Shell script 3') {
+      steps {
+        sh '''helm upgrade myapp manifests/myapp --set image.tag=${RELEASE_VERSION}
+#kubectl apply -f manifests/app.yaml'''
+      }
+    }
+
+  }
+  parameters {
+    string(name: 'RELEASE_VERSION', defaultValue: '1.0.3', description: null)
+  }
+}
